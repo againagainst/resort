@@ -1,7 +1,7 @@
 # Resort
 RESTful API test automation tool
 
-<img src="https://github.com/againagainst/resort/blob/master/data/icons/resort.png?raw=true" alt="resort logo" style="width: 32px;"/>
+![resort logo](https://github.com/againagainst/resort/blob/master/data/icons/resort.png?raw=true)
 
 ## Work in progress!
 1. Setup environment
