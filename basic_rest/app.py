@@ -29,4 +29,7 @@ if __name__ == "__main__":
     logging.info(' - Serving at http://{host}:{port}'.format(host=host,
                                                              port=port))
     application.listen(port=port, address=host)
-    tornado.ioloop.IOLoop.current().start()
+    try:
+        tornado.ioloop.IOLoop.current().start()
+    except KeyboardInterrupt:
+        logging.info(' - Stop serving...')
