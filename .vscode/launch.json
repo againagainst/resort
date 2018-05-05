@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Resort",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/resort/launch.py",
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
