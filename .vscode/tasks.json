@@ -11,6 +11,13 @@
                 "${workspaceFolder}/basic_rest/app.py"
             ],
             "problemMatcher": []
+        },
+        {
+            "label": "Console",
+            "type": "shell",
+            "command": "${workspaceFolder}/.venv/bin/python3",
+            "problemMatcher": [],
+            "isBackground": false
         }
     ]
 }
