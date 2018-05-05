@@ -6,8 +6,9 @@ RESTful API test automation tool
 
 ## Work in progress!
 1. Setup environment [x]
-2. Create a basic method for API definition
-3. Fetch an etalon
+2. Create a basic method for API definition [x]
+3. Fetch an etalon [x]
+3.1 Setup the [Rippozo](https://github.com/vertical-knowledge/ripozo)
 4. Create a basic etalon definition
 5. Create a basic test generator
 
