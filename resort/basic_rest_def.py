@@ -1,15 +1,16 @@
 from urls import methods
-from etalons import BasicHTTPResponseEtalon
 
 
 class PingEntry():
-    url = r'ping'
+    entity = r'ping'
+
+    def __init__(self, remote: str):
+        self.remote = remote
+
+    @property
+    def url(self):
+        return "{server}/{url}".format(server=self.remote, url=self.entity)
 
     @methods('GET')
     def read(self, response=None):
         return response
-
-    @methods('GET')
-    def store_get_etalon(self, response=None):
-        etalon = BasicHTTPResponseEtalon(response)
-        print(str(etalon))
