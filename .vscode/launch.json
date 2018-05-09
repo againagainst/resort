@@ -4,6 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}"
+        },
         {
             "name": "Launch Resort",
             "type": "python",
@@ -13,6 +20,14 @@
                 "--config=${workspaceFolder}/data/config.json",
                 "--output=${workspaceFolder}/data/output/localhost.eta",
                 "--input=http://localhost:8888",
+            ]
+        },
+        {
+            "name": "Debug Basic REST server",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/basic_rest/app.py",
+            "args": [
             ]
         }
     ]

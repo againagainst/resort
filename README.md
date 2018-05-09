@@ -10,15 +10,13 @@ RESTful API test automation tool
 - Create a basic method for API definition [x]
 - Fetch an etalon [x]
 - Provide options support [x]
-- Setup the [Rippozo](https://github.com/vertical-knowledge/ripozo)
 - Create a basic etalon definition
 - Create a basic test generator
 
 ### Hot to prepare the dev environment:
 ```
 python3 -m venv .venv
-. .venv/bin/activate
-pip install -r reqirements.txt
+./.venv/bin/python3 -m pip install -r reqirements.txt
 ```
 
 ### How to start the REST-test server:
