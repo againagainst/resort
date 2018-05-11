@@ -24,4 +24,5 @@ def read_all(cfg_file_path='config.json'):
     args = command_line_arguments()
     cfg_file = args.get('config', cfg_file_path)
     cfg = read_config(cfg_file)
-    return {**cfg, **args}
+    # FIXME: rewrite args parser to not shadow cfg values
+    return {**args, **cfg}

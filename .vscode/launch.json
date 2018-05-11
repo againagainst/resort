@@ -18,8 +18,7 @@
             "program": "${workspaceFolder}/resort/launch.py",
             "args": [
                 "--config=${workspaceFolder}/data/config.json",
-                "--output=${workspaceFolder}/data/output/localhost.eta",
-                "--input=http://localhost:8888",
+                "--output=${workspaceFolder}/data/output/localhost.eta"
             ]
         },
         {

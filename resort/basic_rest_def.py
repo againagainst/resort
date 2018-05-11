@@ -1,4 +1,4 @@
-from urls import methods
+import urls
 
 
 class PingEntry():
@@ -11,6 +11,6 @@ class PingEntry():
     def url(self):
         return "{server}/{url}".format(server=self.remote, url=self.entity)
 
-    @methods('GET')
+    @urls.request_for_methods('GET')
     def read(self, response=None):
         return response
