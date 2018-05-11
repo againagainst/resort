@@ -9,7 +9,7 @@ from basic_rest_def import PingEntry
 
 def basic_etalon_saving_example():
     opts = options.read_all()
-    ping_entry = PingEntry(opts['input'])
+    ping_entry = PingEntry(opts['server'])
     response = ping_entry.read()
     etalon = etalons.BasicHTTPResponseEtalon(response)
     eio = etalons.EtalonIO(opts)
@@ -18,8 +18,13 @@ def basic_etalon_saving_example():
 
 def schema_request_etalon_saving_example():
     opts = options.read_all()
-    client = BasicClient(dict(file=opts['input'])).prepare()
-    pprint(client.schema_body)
+    # TODO: init from opts
+    client = BasicClient(server_url=opts['server'],
+                         schema_info={'file': opts['schema']}
+                         ).prepare()
+    eio = etalons.EtalonIO(opts)
+    for etalon in client.fetch_etalons():
+        eio.save(etalon)
 
 
 if __name__ == '__main__':

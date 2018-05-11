@@ -5,8 +5,8 @@ import json
 parser = argparse.ArgumentParser(description='Provide --output to store an etalon')
 parser.add_argument('--output', dest='output', type=pathlib.Path,
                     help='path to the output file')
-parser.add_argument('--input', dest='input', type=str,
-                    help='path to the input file')
+parser.add_argument('--server', dest='server', type=str,
+                    help='path to the server file')
 parser.add_argument('--config', dest='config', type=pathlib.Path,
                     help='path to the config file, default is "./config.json"')
 
