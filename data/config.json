@@ -1,2 +1,6 @@
 {
+    "server": {
+        "schema": "data/basic-apispec.json",
+        "url": "http://localhost:8888"
+    }
 }

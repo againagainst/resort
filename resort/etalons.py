@@ -13,8 +13,13 @@ class BasicHTTPResponseEtalon:
     Server: TornadoServer/5.0.2
     '''
 
-    def __init__(self, response: requests.Response):
+    def __init__(self, response: requests.Response, name: str=''):
         self._headers = response.headers
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
 
     def __str__(self):
         title = 'Response'
@@ -24,12 +29,17 @@ class BasicHTTPResponseEtalon:
 
 class EtalonIO:
 
-    def __init__(self, config: dict):
-        self.read_file = config.get('input')
-        self.write_file = config.get('output')
+    def __init__(self, output_dir, mkdir=False):
+        if output_dir.exists() and not output_dir.is_dir():
+            raise NotADirectoryError(output_dir)
+        self.output_dir = output_dir
+        if mkdir:
+            self.output_dir.mkdir(exist_ok=True)
 
-    def save(self, etalon: BasicHTTPResponseEtalon, filepath: pathlib.Path=None):
-        filepath = filepath or self.write_file
+    def save(self, etalon: BasicHTTPResponseEtalon, filepath: pathlib.Path=None, mkdir=False):
+        if filepath is None:
+            filename = '{0}.etalon'.format(etalon.name or 'unknown')
+            filepath = self.output_dir.joinpath(filename)
 
         with filepath.open(mode='w') as f:
             f.write(str(etalon))

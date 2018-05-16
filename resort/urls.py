@@ -2,7 +2,7 @@ import requests
 from functools import wraps
 
 
-def methods(*http_methods):
+def request_for_methods(*http_methods):
     '''
     '''
     def real_decorator(operation):
