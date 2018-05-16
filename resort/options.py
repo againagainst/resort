@@ -22,12 +22,24 @@ def make_argparser():
                         type=pathlib.Path,
                         help='path to the config file, default is "./config.json"',
                         dest='config')
+    cmd_group = parser.add_mutually_exclusive_group()
+    cmd_group.add_argument("--store", action="store_true")
+    cmd_group.add_argument("--check", action="store_true")
     return parser
 
 
 def command_line_arguments():
     parser = make_argparser()
-    return vars(parser.parse_args())
+    args = vars(parser.parse_args())
+
+    store = args.pop('store', None)
+    check = args.pop('check', None)
+    if store and check:
+        raise RuntimeError("The --store can not be used with --check")
+    elif store:
+        args['mode'] = 'store'
+    else:  # Assume --check if no options provided
+        args['mode'] = 'check'
 
 
 def read_config(cfg_file: pathlib.Path):
