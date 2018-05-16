@@ -8,16 +8,11 @@ from etalons import BasicHTTPResponseEtalon
 
 class BasicClient(object):
 
-    def __init__(self, server_url, schema_info):
+    def __init__(self, server_url, schema_file):
         '''
-        schema_info = {
-            'type' = 'file',
-            'file' = './path/to/schema,
-        }
         '''
-        self._type = schema_info.get('type', 'file')
-        self._file = schema_info.get('file', None)
         self._server_url = server_url
+        self._file = schema_file
 
     @property
     def schema_body(self):
@@ -34,9 +29,8 @@ class BasicClient(object):
         returns self to create a prepared client:
         client = BasicClient().prepare()
         '''
-        if self._type == 'file':
-            with open(self._file) as fp:
-                self._schema_body = BasicClient.parse_schema(fp)
+        with open(self._file) as fp:
+            self._schema_body = BasicClient.parse_schema(fp)
         return self
 
     def fetch_etalons(self, http_methods=('GET',), Etalon=BasicHTTPResponseEtalon):

@@ -29,10 +29,14 @@ class BasicHTTPResponseEtalon:
 
 class EtalonIO:
 
-    def __init__(self, config: dict):
-        self.output_dir = config.get('output')
+    def __init__(self, output_dir, mkdir=False):
+        if output_dir.exists() and not output_dir.is_dir():
+            raise NotADirectoryError(output_dir)
+        self.output_dir = output_dir
+        if mkdir:
+            self.output_dir.mkdir(exist_ok=True)
 
-    def save(self, etalon: BasicHTTPResponseEtalon, filepath: pathlib.Path=None):
+    def save(self, etalon: BasicHTTPResponseEtalon, filepath: pathlib.Path=None, mkdir=False):
         if filepath is None:
             filename = '{0}.etalon'.format(etalon.name or 'unknown')
             filepath = self.output_dir.joinpath(filename)
