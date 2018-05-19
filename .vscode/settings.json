@@ -15,4 +15,8 @@
         "**/site-packages/**/*.py",
         "/usr/lib/*"
     ],
+    "files.exclude": {
+        "**/__pycache__/**": true,
+        "**/.venv/**": true
+    }
 }

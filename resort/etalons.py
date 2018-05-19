@@ -4,6 +4,11 @@ import json
 
 
 class BasicHTTPResponseEtalon:
+    __STR__ = '''
+Response:
+{headers}
+Body:
+{body}'''
 
     def __init__(self, entry: str, response: requests.Response=None, name: str=None):
         self._entry = entry
@@ -11,6 +16,10 @@ class BasicHTTPResponseEtalon:
         if response is not None:
             self._headers = response.headers
             self._body = response.text
+
+    def restore_from_dict(self, etalon: dict):
+        self._headers = etalon['headers']
+        self._body = etalon['body']
 
     @property
     def name(self):
@@ -24,27 +33,14 @@ class BasicHTTPResponseEtalon:
     def path(self):
         return self.dir.joinpath("{0}.json".format(self.name))
 
-    def dump(self, fp):
-        output = dict(headers=dict(self._headers),
-                      body=self._body)
-        return json.dump(output, fp, indent=2)
-
-    def load(self, fp):
-        etalon = json.load(fp)
-        self._headers = etalon['headers']
-        self._body = etalon['body']
-
-    __STR = '''Response:
-{headers}
-Body:
-{body}
-'''
+    def dump(self):
+        return dict(headers=dict(self._headers),
+                    body=self._body)
 
     def __str__(self):
-        return self.__STR.format(headers="\n".join('{0}: {1}'.format(k, v)
-                                                   for k, v in self._headers.items()),
-                                 body=self._body
-                                 )
+        return BasicHTTPResponseEtalon.__STR__.format(
+            headers="\n".join('{0}: {1}'.format(k, v) for k, v in self._headers.items()),
+            body=self._body)
 
 
 class EtalonIO:
@@ -62,12 +58,12 @@ class EtalonIO:
 
         etadir.mkdir(parents=True, exist_ok=True)
         with etapath.open(mode='w') as f:
-            etalon.dump(f)
+            json.dump(etalon.dump(), f, indent=2)
 
     def read(self, entry: str, Etalon=BasicHTTPResponseEtalon):
         etalon = Etalon(entry=entry)
         etapath = self.project_dir.joinpath(etalon.path)
 
         with etapath.open(mode='r') as f:
-            etalon.load(f)
+            etalon.restore_from_dict(json.load(f))
         return etalon

@@ -1,5 +1,6 @@
 import json
 import re
+import pathlib
 
 
 class ServerSpecReader(object):
@@ -7,19 +8,19 @@ class ServerSpecReader(object):
 
     def __init__(self, spec_file):
         self._file = spec_file
-        self.schema_body = None
-
-    @classmethod
-    def parse_schema(self, in_file):
-        body = json.load(in_file)
-        return body['paths']
+        self._paths = None
+        self.version = None
+        self.vprefix = None
 
     def prepare(self):
         with open(self._file) as fp:
-            self.schema_body = ServerSpecReader.parse_schema(fp)
+            body = json.load(fp)
+            self._paths = body['paths']
+            self.version = body['info']['version']
+            self.vprefix = pathlib.Path('v' + self.version)
+        return self
 
-    def paths(self, server_spec=None):
-        server_spec = server_spec or self.schema_body
-        for full_entry in server_spec.keys():
+    def paths(self, server_spec: dict=None):
+        for full_entry in self._paths.keys():
             # '/ping/12' -> 'ping/12'
             yield self.ENTRY_PREFIX.sub('', full_entry)

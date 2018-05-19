@@ -8,11 +8,10 @@ from server_spec import ServerSpecReader
 
 class BasicClient(object):
 
-    def __init__(self, server_url, spec_file):
-        '''
-        '''
-        self.server_spec = ServerSpecReader(spec_file=spec_file)
+    def __init__(self, server_url: str, spec_file: str=None):
         self._server_url = server_url
+        if spec_file is not None:
+            self.server_spec = ServerSpecReader(spec_file=spec_file)
 
     def prepare(self):
         '''
@@ -23,9 +22,14 @@ class BasicClient(object):
         self.server_spec.prepare()
         return self
 
-    def fetch_etalons(self, http_methods=('GET',), Etalon=BasicHTTPResponseEtalon):
+    def snapshot_etalons(self, http_methods=('GET',), Etalon=BasicHTTPResponseEtalon):
         for each_entry in self.server_spec.paths():
             url = urllib.parse.urljoin(self._server_url, each_entry)
             for METHOD in http_methods:
                 yield Etalon(entry=each_entry,
                              response=requests.request(METHOD, url))
+
+    def snapshot(self, entry: str, method: str, Cls=BasicHTTPResponseEtalon):
+        url = urllib.parse.urljoin(self._server_url, entry)
+        return Cls(entry=entry,
+                   response=requests.request(method, url))
