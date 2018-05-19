@@ -18,7 +18,7 @@
             "program": "${workspaceFolder}/resort/launch.py",
             "args": [
                 "--config=${workspaceFolder}/data/config.json",
-                "--output=${workspaceFolder}/data/output"
+                "--project=${workspaceFolder}/data/basic-rest-test"
             ]
         },
         {

@@ -1,7 +1,7 @@
 '''
 Available options:
 config - path to the config json file (cli argument only)
-output - path to the output directory
+project - path to the project directory
 server.url - address of a test server
 server.schema - definition of a test server
 '''
@@ -11,12 +11,12 @@ import json
 
 
 def make_argparser():
-    parser = argparse.ArgumentParser(description='Provide --output to store an etalon')
-    parser.add_argument('-o', '--output',
+    parser = argparse.ArgumentParser(description='Provide --project to store an etalon')
+    parser.add_argument('-o', '--project',
                         default=argparse.SUPPRESS,
                         type=pathlib.Path,
-                        help='path to the output file',
-                        dest='output')
+                        help='path to the project file',
+                        dest='project')
     parser.add_argument('-c', '--config',
                         default="config.json",
                         type=pathlib.Path,

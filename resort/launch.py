@@ -10,7 +10,7 @@ def basic_etalon_saving_example():
     ping_entry = PingEntry(opts['server']['url'])
     response = ping_entry.read()
     etalon = etalons.BasicHTTPResponseEtalon(response)
-    eio = etalons.EtalonIO(output_dir=opts['output'], make_dir=True)
+    eio = etalons.EtalonIO(project_dir=opts['project'], make_dir=True)
     eio.save(etalon)
 
 
@@ -19,7 +19,7 @@ def schema_request_etalon_saving_example():
     client = BasicClient(server_url=opts['server']['url'],
                          schema_file=opts['server']['schema']
                          ).prepare()
-    eio = etalons.EtalonIO(output_dir=opts['output'], make_dir=True)
+    eio = etalons.EtalonIO(project_dir=opts['project'], make_dir=True)
     for etalon in client.fetch_etalons():
         eio.save(etalon)
 

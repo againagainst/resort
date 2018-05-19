@@ -29,16 +29,16 @@ class BasicHTTPResponseEtalon:
 
 class EtalonIO:
 
-    def __init__(self, output_dir: pathlib.Path, make_dir=False):
-        if output_dir.exists() and not output_dir.is_dir():
-            raise NotADirectoryError(output_dir)
+    def __init__(self, project_dir: pathlib.Path, make_dir=False):
+        if project_dir.exists() and not project_dir.is_dir():
+            raise NotADirectoryError(project_dir)
         if make_dir:
-            output_dir.mkdir(parents=True, exist_ok=True)
-        self.output_dir = output_dir
+            project_dir.mkdir(parents=True, exist_ok=True)
+        self.project_dir = project_dir
 
     def save(self, etalon: BasicHTTPResponseEtalon):
         filename = '{0}.etalon'.format(etalon.name or 'unknown')
-        filepath = self.output_dir.joinpath(filename)
+        filepath = self.project_dir.joinpath(filename)
 
         with filepath.open(mode='w') as f:
             f.write(str(etalon))
