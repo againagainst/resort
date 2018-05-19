@@ -51,7 +51,7 @@ $ resort --store --config=config.json
 ```
 
 `resort` will store some files that represents responses from the test-server, they called `etalons`.
-Now you can make some chnages in the test-servers's code, restart it, and let's check that everything works as expected:
+Now you can make some changes in the test-servers's code, restart it, and let's check that everything works as expected:
 ```
 $ resort --check --config=config.json
 ```
