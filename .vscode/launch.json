@@ -12,13 +12,24 @@
             "program": "${file}"
         },
         {
-            "name": "Launch Resort",
+            "name": "Resort [store]",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/resort/launch.py",
+            "args": [
+                "--store",
+                "--config=${workspaceFolder}/data/config.json",
+                "--project=${workspaceFolder}/data/basic-rest-test"
+            ]
+        },
+        {
+            "name": "Resort [check]",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/resort/launch.py",
             "args": [
                 "--config=${workspaceFolder}/data/config.json",
-                "--output=${workspaceFolder}/data/kek.shpeck"
+                "--project=${workspaceFolder}/data/basic-rest-test"
             ]
         },
         {
