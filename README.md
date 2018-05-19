@@ -10,7 +10,8 @@ RESTful API test automation tool
 - Create a basic method for API definition [x]
 - Fetch an etalon [x]
 - Provide options support [x]
-- Create a basic etalon definition [x]
+- Create a basic etalon definition (store mode) [x]
+- Create an etalon-reader (check mode)
 - Create a basic test generator
 
 ### Basic usage:
@@ -22,13 +23,13 @@ $ mkdir basic-rest-test
 $ cd basic-rest-test
 ```
 
-Configure the resort and provide a schema of the server to test
+Configure the resort and provide an API specification of the test-server
 ```
 $ touch config.json
 $ cat config.json
 {
     "server": {
-        "schema": "basic-apispec.json",
+        "spec": "basic-apispec.json",
         "url": "http://localhost:8888"
     }
 }

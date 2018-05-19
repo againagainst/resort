@@ -1,19 +1,11 @@
 import pathlib
 import requests
+import json
 
 
 class BasicHTTPResponseEtalon:
-    '''
-    Response
-    HTTP/1.1 200 OK
-    Etag: "0e514a0662bcb69dc863953d1ce26e3d40e81a87"
-    Content-Type: text/html; charset=UTF-8
-    Date: Sat, 05 May 2018 11:19:21 GMT
-    Content-Length: 4
-    Server: TornadoServer/5.0.2
-    '''
 
-    def __init__(self, entry: str, response: requests.Response, name: str=None):
+    def __init__(self, entry: str, response: requests.Response=None, name: str=None):
         self._entry = entry
         self._headers = response.headers
         self._body = response.text
@@ -26,20 +18,20 @@ class BasicHTTPResponseEtalon:
     @property
     def dir(self):
         return pathlib.Path(self._entry)
-    
+
     @property
     def path(self):
-        return self.dir.joinpath("{0}.str".format(self.name))
+        return self.dir.joinpath("{0}.json".format(self.name))
 
-    def __str__(self):
-        return '''Response:
-{headers}
-Body:
-{body}
-'''.format(headers="\n".join('{0}: {1}'.format(k, v)
-                             for k, v in self._headers.items()),
-           body=self._body
-           )
+    def dump(self, fp):
+        output = dict(headers=dict(self._headers),
+                      body=self._body)
+        return json.dump(output, fp, indent=2)
+
+    def load(self, fp):
+        etalon = json.load(fp)
+        self._headers = etalon['headers']
+        self._body = etalon['body']
 
 
 class EtalonIO:
@@ -57,4 +49,12 @@ class EtalonIO:
 
         etadir.mkdir(parents=True, exist_ok=True)
         with etapath.open(mode='w') as f:
-            f.write(str(etalon))
+            etalon.dump(f)
+
+    def read(self, entry: str, Etalon=BasicHTTPResponseEtalon):
+        etalon = Etalon(entry=entry)
+        etapath = self.project_dir.joinpath(etalon.path)
+
+        with etapath.open(mode='r') as f:
+            etalon.load(f)
+        return etalon

@@ -12,11 +12,12 @@
             "program": "${file}"
         },
         {
-            "name": "Launch Resort",
+            "name": "Resort [store]",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/resort/launch.py",
             "args": [
+                "--store",
                 "--config=${workspaceFolder}/data/config.json",
                 "--project=${workspaceFolder}/data/basic-rest-test"
             ]
