@@ -7,9 +7,10 @@ class BasicHTTPResponseEtalon:
 
     def __init__(self, entry: str, response: requests.Response=None, name: str=None):
         self._entry = entry
-        self._headers = response.headers
-        self._body = response.text
         self._name = name or 'etalon'
+        if response is not None:
+            self._headers = response.headers
+            self._body = response.text
 
     @property
     def name(self):
@@ -32,6 +33,18 @@ class BasicHTTPResponseEtalon:
         etalon = json.load(fp)
         self._headers = etalon['headers']
         self._body = etalon['body']
+
+    __STR = '''Response:
+{headers}
+Body:
+{body}
+'''
+
+    def __str__(self):
+        return self.__STR.format(headers="\n".join('{0}: {1}'.format(k, v)
+                                                   for k, v in self._headers.items()),
+                                 body=self._body
+                                 )
 
 
 class EtalonIO:

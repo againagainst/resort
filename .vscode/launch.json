@@ -23,6 +23,16 @@
             ]
         },
         {
+            "name": "Resort [check]",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/resort/launch.py",
+            "args": [
+                "--config=${workspaceFolder}/data/config.json",
+                "--project=${workspaceFolder}/data/basic-rest-test"
+            ]
+        },
+        {
             "name": "Debug Basic REST server",
             "type": "python",
             "request": "launch",

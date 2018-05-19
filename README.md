@@ -11,7 +11,7 @@ RESTful API test automation tool
 - Fetch an etalon [x]
 - Provide options support [x]
 - Create a basic etalon definition (store mode) [x]
-- Create an etalon-reader (check mode)
+- Create an etalon-reader (check mode) [x]
 - Create a basic test generator
 
 ### Basic usage:
