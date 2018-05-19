@@ -22,12 +22,9 @@ class BasicClient(object):
         self.server_spec.prepare()
         return self
 
-    def snapshot_etalons(self, http_methods=('GET',), Etalon=BasicHTTPResponseEtalon):
-        for each_entry in self.server_spec.paths():
-            url = urllib.parse.urljoin(self._server_url, each_entry)
-            for METHOD in http_methods:
-                yield Etalon(entry=each_entry,
-                             response=requests.request(METHOD, url))
+    def snapshot_etalons(self, Etalon=BasicHTTPResponseEtalon):
+        for method, each_entry in self.server_spec.paths_and_methods():
+            yield self.snapshot(each_entry, method)
 
     def snapshot(self, entry: str, method: str, Cls=BasicHTTPResponseEtalon):
         url = urllib.parse.urljoin(self._server_url, entry)

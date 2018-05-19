@@ -12,6 +12,7 @@
 - [ ] Docstring all classes and methods
 - [ ] Setup exhaustive logging
 - [ ] Create the app
+- [ ] Add error (exception) handling 
 - [ ] Write exhaustive help system (`--help`)
 - [ ] Replace arguments with commands (`--store`->`store`)
 - [ ] Add instalation procedures (setup.py)

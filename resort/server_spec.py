@@ -20,7 +20,14 @@ class ServerSpecReader(object):
             self.vprefix = pathlib.Path('v' + self.version)
         return self
 
-    def paths(self, server_spec: dict=None):
+    def paths(self):
         for full_entry in self._paths.keys():
             # '/ping/12' -> 'ping/12'
             yield self.ENTRY_PREFIX.sub('', full_entry)
+
+    def paths_and_methods(self):
+        for full_entry, entry_desc in self._paths.items():
+            # '/ping/12' -> 'ping/12'
+            relative_entry = self.ENTRY_PREFIX.sub('', full_entry)
+            for method in entry_desc.keys():
+                yield method, relative_entry

@@ -24,9 +24,9 @@ def checking_example(opts: dict):
     spec_reader = ServerSpecReader(opts['server']['spec']).prepare()
     client = BasicClient(server_url=opts['server']['url'])
     eio = etalons.EtalonIO(project_dir=opts['project'])
-    for entry in spec_reader.paths():
+    for method, entry in spec_reader.paths_and_methods():
         etalon_d = eio.read(entry).dump()
-        snap_d = client.snapshot(entry, 'GET').dump()
+        snap_d = client.snapshot(entry, method).dump()
         pprint(list(diff(etalon_d, snap_d)))
 
 
