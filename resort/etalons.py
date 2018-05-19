@@ -13,18 +13,33 @@ class BasicHTTPResponseEtalon:
     Server: TornadoServer/5.0.2
     '''
 
-    def __init__(self, response: requests.Response, name: str=None):
+    def __init__(self, entry: str, response: requests.Response, name: str=None):
+        self._entry = entry
         self._headers = response.headers
-        self._name = name
+        self._body = response.text
+        self._name = name or 'etalon'
 
     @property
     def name(self):
         return self._name
 
+    @property
+    def dir(self):
+        return pathlib.Path(self._entry)
+    
+    @property
+    def path(self):
+        return self.dir.joinpath("{0}.str".format(self.name))
+
     def __str__(self):
-        title = 'Response'
-        content = "\n".join('{0}: {1}'.format(k, v) for k, v in self._headers.items())
-        return '{title}\n{content}'.format(title=title, content=content)
+        return '''Response:
+{headers}
+Body:
+{body}
+'''.format(headers="\n".join('{0}: {1}'.format(k, v)
+                             for k, v in self._headers.items()),
+           body=self._body
+           )
 
 
 class EtalonIO:
@@ -37,8 +52,9 @@ class EtalonIO:
         self.project_dir = project_dir
 
     def save(self, etalon: BasicHTTPResponseEtalon):
-        filename = '{0}.etalon'.format(etalon.name or 'unknown')
-        filepath = self.project_dir.joinpath(filename)
+        etadir = self.project_dir.joinpath(etalon.dir)
+        etapath = self.project_dir.joinpath(etalon.path)
 
-        with filepath.open(mode='w') as f:
+        etadir.mkdir(parents=True, exist_ok=True)
+        with etapath.open(mode='w') as f:
             f.write(str(etalon))

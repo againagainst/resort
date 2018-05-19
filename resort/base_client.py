@@ -1,4 +1,5 @@
 import json
+import re
 import urllib.parse
 
 import requests
@@ -7,6 +8,7 @@ from etalons import BasicHTTPResponseEtalon
 
 
 class BasicClient(object):
+    ENTRY_PREFIX = re.compile(r'^(/)')
 
     def __init__(self, server_url, schema_file):
         '''
@@ -34,12 +36,14 @@ class BasicClient(object):
         return self
 
     def fetch_etalons(self, http_methods=('GET',), Etalon=BasicHTTPResponseEtalon):
-        for url in self.paths():
+        for each_entry in self.paths():
+            url = urllib.parse.urljoin(self._server_url, each_entry)
             for METHOD in http_methods:
-                _, _, entry, _, _ = urllib.parse.urlsplit(url)
-                yield Etalon(requests.request(METHOD, url), name=entry.replace('/', '-'))
+                yield Etalon(entry=each_entry,
+                             response=requests.request(METHOD, url))
 
     def paths(self, schema=None):
         schema = schema or self._schema_body
-        for each_path in schema.keys():
-            yield urllib.parse.urljoin(self._server_url, each_path)
+        for full_entry in schema.keys():
+            # '/ping/12' -> 'ping/12'
+            yield self.ENTRY_PREFIX.sub('', full_entry)

@@ -2,16 +2,6 @@ import options
 import etalons
 
 from base_client import BasicClient
-from basic_rest_def import PingEntry
-
-
-def basic_etalon_saving_example():
-    opts = options.read_all()
-    ping_entry = PingEntry(opts['server']['url'])
-    response = ping_entry.read()
-    etalon = etalons.BasicHTTPResponseEtalon(response)
-    eio = etalons.EtalonIO(project_dir=opts['project'], make_dir=True)
-    eio.save(etalon)
 
 
 def schema_request_etalon_saving_example():

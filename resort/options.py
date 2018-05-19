@@ -40,6 +40,7 @@ def command_line_arguments():
         args['mode'] = 'store'
     else:  # Assume --check if no options provided
         args['mode'] = 'check'
+    return args
 
 
 def read_config(cfg_file: pathlib.Path):

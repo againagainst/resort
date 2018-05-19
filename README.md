@@ -10,7 +10,7 @@ RESTful API test automation tool
 - Create a basic method for API definition [x]
 - Fetch an etalon [x]
 - Provide options support [x]
-- Create a basic etalon definition
+- Create a basic etalon definition [x]
 - Create a basic test generator
 
 ### Basic usage:
