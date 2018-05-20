@@ -3,6 +3,7 @@ RESTful API test automation tool
 
 
 ![resort logo](https://github.com/againagainst/resort/blob/master/data/icons/resort_edit.png?raw=true)
+
 <sub><sup>[Original Image by Vecteezy](https://www.vecteezy.com/vector-art/146821-palm-tree-collection-vectors)</sup></sub>
 
 ## Work in progress!
