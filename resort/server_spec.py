@@ -6,7 +6,7 @@ import pathlib
 class ServerSpecReader(object):
     ENTRY_PREFIX = re.compile(r'^(/)')
 
-    def __init__(self, spec_file):
+    def __init__(self, spec_file: str):
         self._file = spec_file
         self._paths = None
         self.version = None
