@@ -18,5 +18,6 @@
     "files.exclude": {
         "**/__pycache__/**": true,
         "**/.venv/**": true
-    }
+    },
+    "autoDocstring.docstringFormat": "google"
 }
