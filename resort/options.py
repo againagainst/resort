@@ -11,6 +11,12 @@ import json
 
 
 def make_argparser():
+    """TODO: Add the docstring
+
+    Returns:
+        [type]: [description]
+    """
+
     parser = argparse.ArgumentParser(description='Provide --project to store an etalon')
     parser.add_argument('-o', '--project',
                         default=argparse.SUPPRESS,
@@ -29,6 +35,15 @@ def make_argparser():
 
 
 def command_line_arguments():
+    """TODO: Add the docstring
+
+    Raises:
+        RuntimeError: [description]
+
+    Returns:
+        [type]: [description]
+    """
+
     parser = make_argparser()
     args = vars(parser.parse_args())
 
@@ -44,11 +59,27 @@ def command_line_arguments():
 
 
 def read_config(cfg_file: pathlib.Path):
+    """TODO: Add the docstring
+
+    Args:
+      cfg_file: pathlib.Path:
+
+    Returns:
+
+    """
     with cfg_file.open(mode='r') as cfgf:
         return json.load(cfgf)
 
 
 def read_all(cfg_file_path='config.json'):
+    """TODO: Add the docstring
+
+    Args:
+      cfg_file_path:  (Default value = 'config.json')
+
+    Returns:
+
+    """
     args = command_line_arguments()
     cfg_file = args.get('config', cfg_file_path)
     cfg = read_config(cfg_file)

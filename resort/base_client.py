@@ -12,6 +12,11 @@ class BasicClient(object):
         """Establishes connection to the server with given url.
         With spec_file provided it can make snapshot for each
         entry described in the spec.
+
+        Args:
+
+        Returns:
+
         """
 
         self._server_url = server_url
@@ -22,15 +27,38 @@ class BasicClient(object):
         """Load a API Spec to the client's ServerSpecReader.
         returns self to create a prepared client:
         client = BasicClient().prepare()
+
+        Args:
+
+        Returns:
+
         """
         self.server_spec.prepare()
         return self
 
     def snapshot_etalons(self, Etalon=BasicHTTPResponseEtalon):
+        """TODO: Add the docstring
+
+        Args:
+          Etalon:  (Default value = BasicHTTPResponseEtalon)
+
+        Returns:
+
+        """
         for method, each_entry in self.server_spec.paths_and_methods():
             yield self.snapshot(each_entry, method)
 
     def snapshot(self, entry: str, method: str, Etalon=BasicHTTPResponseEtalon):
+        """TODO: Add the docstring
+
+        Args:
+          entry: str:
+          method: str:
+          Etalon:  (Default value = BasicHTTPResponseEtalon)
+
+        Returns:
+
+        """
         url = urllib.parse.urljoin(self._server_url, entry)
         return Etalon(entry=entry,
                       response=requests.request(method, url))

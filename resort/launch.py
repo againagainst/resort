@@ -10,6 +10,14 @@ from server_spec import ServerSpecReader
 
 
 def store_example(opts: dict):
+    """TODO: Add the docstring
+
+    Args:
+      opts: dict:
+
+    Returns:
+
+    """
     assert opts['mode'] == 'store'
     client = BasicClient(server_url=opts['server']['url'],
                          spec_file=opts['server']['spec']
@@ -20,6 +28,14 @@ def store_example(opts: dict):
 
 
 def checking_example(opts: dict):
+    """TODO: Add the docstring
+
+    Args:
+      opts: dict:
+
+    Returns:
+
+    """
     assert opts['mode'] == 'check'
     spec_reader = ServerSpecReader(opts['server']['spec']).prepare()
     client = BasicClient(server_url=opts['server']['url'])
@@ -31,6 +47,14 @@ def checking_example(opts: dict):
 
 
 def reading_example(opts: dict):
+    """TODO: Add the docstring
+
+    Args:
+      opts: dict:
+
+    Returns:
+
+    """
     assert opts['mode'] == 'check'
     eio = etalons.EtalonIO(project_dir=opts['project'])
     spec_reader = ServerSpecReader(opts['server']['spec']).prepare()
