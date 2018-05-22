@@ -37,10 +37,11 @@ class BasicClient(object):
         return self
 
     def snapshot_etalons(self, Etalon=BasicHTTPResponseEtalon):
-        """TODO: Add the docstring
+        """Make etalon (a "snapshot") for each entry in the spec
+        which was read from the spec_file.
 
         Args:
-          Etalon:  (Default value = BasicHTTPResponseEtalon)
+          Etalon:  Etalon Constructor (Default value = BasicHTTPResponseEtalon)
 
         Returns:
 
