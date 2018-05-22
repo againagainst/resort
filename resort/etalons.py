@@ -66,6 +66,19 @@ class BasicHTTPResponseEtalon:
             body=self._body)
 
 
+class MIMETypeEtalon(object):
+    """Changes self behavior according to a MIME type
+    of the response.
+
+    TODO: OOP this two classes
+
+    text/html -- str
+    application/json -- json dumps/loads
+    """
+    def __init__(self, entry: str, response: requests.Response=None, name: str=None):
+        pass
+
+
 class EtalonIO:
     """TODO: Add the classdoc string
     """
