@@ -1,9 +1,11 @@
+"""
+TODO: remove this module
+"""
 import urls
 
 
 class PingEntry():
-    """TODO: Add the classdoc string
-    """
+
     entity = r'ping'
 
     def __init__(self, remote: str):
@@ -15,12 +17,4 @@ class PingEntry():
 
     @urls.request_for_methods('GET')
     def read(self, response=None):
-        """TODO: Add the docstring
-
-        Args:
-          response:  (Default value = None)
-
-        Returns:
-
-        """
         return response

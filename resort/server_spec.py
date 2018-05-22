@@ -4,17 +4,14 @@ import pathlib
 
 
 class ServerSpecReader(object):
-    """TODO: Add the classdoc string
+    """TODO: Add the docstring
+
+    Args:
+        spec_file ([type]): [description]
     """
     ENTRY_PREFIX = re.compile(r'^(/)')
 
     def __init__(self, spec_file):
-        """TODO: Add the docstring
-
-        Args:
-            spec_file ([type]): [description]
-        """
-
         self._file = spec_file
         self._paths = None
         self.version = None

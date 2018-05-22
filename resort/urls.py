@@ -1,16 +1,11 @@
+"""
+TODO: remove this module
+"""
 import requests
 from functools import wraps
 
 
 def request_for_methods(*http_methods):
-    """TODO: Add the docstring
-
-    Args:
-      *http_methods:
-
-    Returns:
-
-    """
     def real_decorator(operation):
         @wraps(operation)
         def wrapper(*args, **kwargs):
