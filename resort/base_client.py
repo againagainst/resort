@@ -24,6 +24,7 @@ class BasicClient(object):
     def prepare(self):
         """Load a API Spec to the client's ServerSpecReader.
 
+        TODO: make a static constructor
         Returns: self to create a prepared client:
         client = BasicClient().prepare()
 

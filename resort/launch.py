@@ -1,3 +1,6 @@
+"""
+TODO: Add module/project description
+"""
 from pprint import pprint
 
 from dictdiffer import diff
@@ -20,8 +23,6 @@ def store_example(opts: dict):
 
 
 def checking_example(opts: dict):
-    """TODO: Add the docstring
-    """
     assert opts['mode'] == 'check'
     spec_reader = ServerSpecReader(opts['server']['spec']).prepare()
     client = BasicClient(server_url=opts['server']['url'])
@@ -33,8 +34,6 @@ def checking_example(opts: dict):
 
 
 def reading_example(opts: dict):
-    """TODO: Add the docstring
-    """
     assert opts['mode'] == 'check'
     eio = etalons.EtalonIO(project_dir=opts['project'])
     spec_reader = ServerSpecReader(opts['server']['spec']).prepare()
