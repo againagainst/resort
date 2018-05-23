@@ -16,7 +16,7 @@ class BasicHTTPResponseEtalon(etalons.base.BaseEtalon):
 
     Args:
         entry (str): - spec entry.
-        response (requests.Response, optional): Defaults to None.
+        response [requests.Response, None]
     """
     _EXT = 'json'
     _STR = 'Response:\n{headers}\nBody:\n{body}'
@@ -28,26 +28,24 @@ class BasicHTTPResponseEtalon(etalons.base.BaseEtalon):
             self._body = response.text
 
     def restore_from_dict(self, etalon: dict):
-        """TODO: Add the docstring
+        """Restores etalon object from the JSON-like object.
+        TODO: rename to `load`
 
         Args:
-          etalon: dict:
-
-        Returns:
-
+          etalon: dict
         """
         self._headers = etalon['headers']
         self._body = etalon['body']
 
     def dump(self):
-        """TODO: Add the docstring
+        """JSON-like representation of the object.
 
         Returns:
-            [type]: [description]
+            dict: representation of the object
         """
         return dict(headers=dict(self._headers),
                     body=self._body)
-    
+
     def __str__(self):
         strargs = dict(headers="\n".join('{0}: {1}'.format(k, v)
                                          for k, v

@@ -8,7 +8,7 @@ RESTful API test automation tool
 Development plan is described in the [TODO](TODO.md) list.
 
 ### Basic usage:
-Let's suppose you have a server with the RESTful API (`test-server`). Now you want to introduce some changes to the `test-server` without modifying the API. And you want to be sure that your chages will not bring a regression to existing functionality. It would be nice `store` the `test-server` responses before the changes and `check` that there is no difference later. That is exaclty what the `resort` does.
+Let's suppose you have a server with the RESTful API (`test-server`). Now you want to introduce some changes to the `test-server` without modifying the API. And you want to be sure that your changes will not bring a regression to existing functionality. It would be nice `store` the `test-server` responses before the changes and `check` that there is no difference later. That is exactly what the `resort` does.
 
 Create a directory for the resort's Project
 ```

@@ -1,23 +1,22 @@
 import json
 import pathlib
+from typing import Type
 
 from etalons import BaseEtalon, BasicHTTPResponseEtalon
 
 
 class EtalonIO:
-    """TODO: Add the classdoc string
+    """File system layer. Reads/writes etalons.
+
+    Args:
+        project_dir (pathlib.Path): project directory
+        make_dir [bool, False]: If True, resort won't complain
+        about missing directories, but try to create them.
+
+    Raises:
+        NotADirectoryError: if :project_dir: is a file
     """
-
     def __init__(self, project_dir: pathlib.Path, make_dir=False):
-        """TODO: Add the docstring
-
-        Args:
-            project_dir (pathlib.Path): [description]
-            make_dir (bool, optional): Defaults to False. [description]
-
-        Raises:
-            NotADirectoryError: [description]
-        """
         if project_dir.exists() and not project_dir.is_dir():
             raise NotADirectoryError(project_dir)
         if make_dir:
@@ -25,13 +24,10 @@ class EtalonIO:
         self.project_dir = project_dir
 
     def save(self, etalon: BaseEtalon):
-        """TODO: Add the docstring
+        """Writes :etalon: to the file
 
         Args:
-          etalon: BaseEtalon:
-
-        Returns:
-
+          etalon: BaseEtalon
         """
         etadir = self.project_dir.joinpath(etalon.dir)
         etapath = self.project_dir.joinpath(etalon.path)
@@ -40,16 +36,17 @@ class EtalonIO:
         with etapath.open(mode='w') as f:
             json.dump(etalon.dump(), f, indent=2)
 
-    def read(self, entry: str, Etalon=BasicHTTPResponseEtalon):
-        """TODO: Add the docstring
+    def read(self, entry: str, Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
+        """Reads etalon identified by :entry: from it's file.
 
         Args:
-          entry: str:
-          Etalon:  (Default value = BasicHTTPResponseEtalon)
+            entry (str): API entry from server spec
+            Etalon: Constructor (Default is BasicHTTPResponseEtalon)
 
         Returns:
-
+            Etalon: object
         """
+
         etalon = Etalon(entry=entry)
         etapath = self.project_dir.joinpath(etalon.path)
 

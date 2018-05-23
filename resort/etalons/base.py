@@ -9,8 +9,8 @@ class BaseEtalon(object):
 
         Args:
             entry (str): Entry path
-            name (str, optional): Defaults to 'etalon'. File Name
-            ext (str, optional): Defaults to 'txt'. File extension
+            name [str, 'etalon']: File Name
+            ext [str, 'txt']: File extension
         """
         self._entry = entry
         self._name = name
