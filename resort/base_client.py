@@ -7,30 +7,26 @@ from server_spec import ServerSpecReader
 
 
 class BasicClient(object):
+    """Establishes connection to the server with given url.
+    With spec_file provided it can make snapshot for each
+    entry described in the spec.
+
+    Args:
+        server_url (str)
+        spec_file (str, optional): Defaults to None
+    """
 
     def __init__(self, server_url: str, spec_file: str=None):
-        """Establishes connection to the server with given url.
-        With spec_file provided it can make snapshot for each
-        entry described in the spec.
-
-        Args:
-
-        Returns:
-
-        """
-
         self._server_url = server_url
         if spec_file is not None:
             self.server_spec = ServerSpecReader(spec_file=spec_file)
 
     def prepare(self):
         """Load a API Spec to the client's ServerSpecReader.
-        returns self to create a prepared client:
+
+        TODO: make a static constructor
+        Returns: self to create a prepared client:
         client = BasicClient().prepare()
-
-        Args:
-
-        Returns:
 
         """
         self.server_spec.prepare()
@@ -39,23 +35,25 @@ class BasicClient(object):
     def snapshot_etalons(self, Etalon=BasicHTTPResponseEtalon):
         """Make etalon (a "snapshot") for each entry in the spec
         which was read from the spec_file.
+        see: snapshot
 
         Args:
-          Etalon:  Etalon Constructor (Default value = BasicHTTPResponseEtalon)
+          Etalon: Constructor (Default value = BasicHTTPResponseEtalon)
 
-        Returns:
+        Returns: A generator of etalons
 
         """
         for method, each_entry in self.server_spec.paths_and_methods():
             yield self.snapshot(each_entry, method)
 
     def snapshot(self, entry: str, method: str, Etalon=BasicHTTPResponseEtalon):
-        """TODO: Add the docstring
+        """Makes etalon, a "snapshot" of response from the server
+        to request on the :entry: with the HTTP :method:
 
         Args:
-          entry: str:
-          method: str:
-          Etalon:  (Default value = BasicHTTPResponseEtalon)
+          entry: str: part of the url that describes an API entry
+          method: str: HTTP method: GET - supported, TODO: POST, PUT...
+          Etalon: Constructor (Default value = BasicHTTPResponseEtalon)
 
         Returns:
 

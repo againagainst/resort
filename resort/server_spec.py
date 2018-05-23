@@ -4,27 +4,26 @@ import pathlib
 
 
 class ServerSpecReader(object):
-    """TODO: Add the classdoc string
+    """Allows to iterate over a server specification
+
+    Args:
+        spec_file (pathlib.Path): a full path to a spec file
     """
     ENTRY_PREFIX = re.compile(r'^(/)')
 
     def __init__(self, spec_file):
-        """TODO: Add the docstring
-
-        Args:
-            spec_file ([type]): [description]
-        """
-
         self._file = spec_file
         self._paths = None
         self.version = None
         self.vprefix = None
 
     def prepare(self):
-        """TODO: Add the docstring
+        """Reads the specification from the spec_file.
+        TODO: separate spec version and resort's project version
+        TODO: make a static constructor
 
-        Returns:
-            [type]: [description]
+        Returns: self to create a prepared client
+            self: spec = ServerSpecReader().prepare()
         """
 
         with open(self._file) as fp:
@@ -35,14 +34,20 @@ class ServerSpecReader(object):
         return self
 
     def paths(self):
-        """TODO: Add the docstring
+        """Yields each entry in the spec.
+
+        Returns:
+          a generator of paths: str
         """
         for full_entry in self._paths.keys():
             # '/ping/12' -> 'ping/12'
             yield self.ENTRY_PREFIX.sub('', full_entry)
 
     def paths_and_methods(self):
-        """TODO: Add the docstring
+        """Yields each (method, path) for each entry in the spec.
+
+        Returns:
+          a generator of method, path: tuple
         """
         for full_entry, entry_desc in self._paths.items():
             # '/ping/12' -> 'ping/12'

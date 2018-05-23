@@ -11,10 +11,11 @@ import json
 
 
 def make_argparser():
-    """TODO: Add the docstring
+    """Setups the argparse.ArgumentParser to parse all
+    available options for the application
 
     Returns:
-        [type]: [description]
+        ArgumentParser: parser
     """
 
     parser = argparse.ArgumentParser(description='Provide --project to store an etalon')
@@ -35,13 +36,12 @@ def make_argparser():
 
 
 def command_line_arguments():
-    """TODO: Add the docstring
-
+    """
     Raises:
-        RuntimeError: [description]
-
+        RuntimeError: when user tries to `store` and 
+        `check` at the same time
     Returns:
-        [type]: [description]
+        dict: arguments
     """
 
     parser = make_argparser()
@@ -59,26 +59,26 @@ def command_line_arguments():
 
 
 def read_config(cfg_file: pathlib.Path):
-    """TODO: Add the docstring
-
+    """
     Args:
       cfg_file: pathlib.Path:
-
+      full path to the configuration file
     Returns:
-
+      dict: config.json loaded
     """
     with cfg_file.open(mode='r') as cfgf:
         return json.load(cfgf)
 
 
 def read_all(cfg_file_path='config.json'):
-    """TODO: Add the docstring
+    """Convinient way to get all the options specified by user.
+    Note, that CLI args has higher priority than config options.
 
     Args:
-      cfg_file_path:  (Default value = 'config.json')
-
+      cfg_file_path: str (Default value = 'config.json'):
+      full path to the configuration file
     Returns:
-
+      dict: cli args + config options
     """
     args = command_line_arguments()
     cfg_file = args.get('config', cfg_file_path)
