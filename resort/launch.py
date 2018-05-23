@@ -1,3 +1,6 @@
+"""
+TODO: Add module/project description
+"""
 from pprint import pprint
 
 from dictdiffer import diff

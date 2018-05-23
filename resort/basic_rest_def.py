@@ -1,7 +1,11 @@
+"""
+TODO: remove this module
+"""
 import urls
 
 
 class PingEntry():
+
     entity = r'ping'
 
     def __init__(self, remote: str):

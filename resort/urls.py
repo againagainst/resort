@@ -1,10 +1,11 @@
+"""
+TODO: remove this module
+"""
 import requests
 from functools import wraps
 
 
 def request_for_methods(*http_methods):
-    '''
-    '''
     def real_decorator(operation):
         @wraps(operation)
         def wrapper(*args, **kwargs):
