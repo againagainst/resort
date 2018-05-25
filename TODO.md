@@ -15,11 +15,16 @@
 - [ ] Test generation (`$ resort generate [--unittest]`)
 - [ ] Application interface in python (`import resort`)
 
+### Features to do:
+- [ ] MIME Type based etalon
+- [ ] A tool to compare etalon and snapshot (ResortDiff?)
+
 ### Project organization tasks
 - [ ] Add tests and use TDD
 - [x] Docstring all classes and methods
 - [ ] Setup exhaustive logging
 - [ ] Create the app
+- [ ] Add versioning for the frameworks and track version of the server
 - [ ] Add error (exception) handling 
 - [ ] Write exhaustive help system (`--help`)
 - [ ] Replace arguments with commands (`--store`->`store`)

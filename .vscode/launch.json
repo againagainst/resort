@@ -12,23 +12,32 @@
             "program": "${file}"
         },
         {
-            "name": "Resort [store]",
+            "name": "ResortApp [store]",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/resort/launch.py",
+            "program": "${workspaceFolder}/resort/app.py",
             "args": [
                 "--store",
-                "--config=${workspaceFolder}/data/config.json",
                 "--project=${workspaceFolder}/data/basic-rest-test"
             ]
         },
         {
-            "name": "Resort [check]",
+            "name": "ResortApp [check]",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/resort/launch.py",
+            "program": "${workspaceFolder}/resort/app.py",
             "args": [
-                "--config=${workspaceFolder}/data/config.json",
+                "--check",
+                "--project=${workspaceFolder}/data/basic-rest-test"
+            ]
+        },
+        {
+            "name": "ResortApp [create]",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/resort/app.py",
+            "args": [
+                "--create",
                 "--project=${workspaceFolder}/data/basic-rest-test"
             ]
         },
