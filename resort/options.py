@@ -43,6 +43,9 @@ class ResortMode:
     def is_create(self) -> bool:
         return self.name == ResortMode.CREATE
 
+    def select(self, **kwargs):
+        return kwargs[self.name]
+
     def __repr__(self):
         return 'ResortMode({!r})'.format(self.name)
 
@@ -63,7 +66,7 @@ def make_argparser():
                         help='path to the project file',
                         dest='project')
     parser.add_argument('-c', '--config',
-                        default="config.json",
+                        default=argparse.SUPPRESS,
                         type=pathlib.Path,
                         help='path to the config file, default is "./config.json"',
                         dest='config')
@@ -119,9 +122,22 @@ def read_all():
     """
     args = command_line_arguments()
     project_dir = args['project']
+    # resolve config
     default_config = None
     if not args['mode'].is_create() and project_dir:
         default_config = project_dir.joinpath(CONFIG_FILE_NAME)
     cfg_file = args.get('config', default_config)
-    cfg = read_config(cfg_file)
+    if cfg_file:
+        cfg = read_config(cfg_file)
+    else:
+        cfg = dict()
+
+    # resolve spec
+    try:
+        spec_path = pathlib.Path(cfg['server']['spec'])
+        if not spec_path.is_absolute():
+            spec_path = project_dir.joinpath(spec_path)
+            cfg['server']['spec'] = spec_path
+    except KeyError:
+        raise RuntimeError("Can not find the Server API Specification")
     return {**cfg, **args}

@@ -15,11 +15,10 @@ class ResortApp:
     def launch():
         """TODO: Add description docstring
         """
-
         opts = options.read_all()
-        launcher = opts['mode'].launcher(store=ResortApp.store,
-                                         check=ResortApp.check,
-                                         create=ResortApp.create)
+        launcher = opts['mode'].select(store=ResortApp.store,
+                                       check=ResortApp.check,
+                                       create=ResortApp.create)
         launcher(opts)
 
     @staticmethod
@@ -29,7 +28,6 @@ class ResortApp:
         Args:
             opts (dict): [description]
         """
-        print(opts)
         client = BasicClient(server_url=opts['server']['url'],
                              spec_file=opts['server']['spec']
                              ).prepare()
@@ -44,7 +42,6 @@ class ResortApp:
         Args:
             opts (dict): [description]
         """
-
         spec_reader = ServerSpecReader(opts['server']['spec']).prepare()
         client = BasicClient(server_url=opts['server']['url'])
         eio = etalons.EtalonIO(project_dir=opts['project'])

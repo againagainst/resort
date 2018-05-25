@@ -26,7 +26,7 @@ class ServerSpecReader(object):
             self: spec = ServerSpecReader().prepare()
         """
 
-        with open(self._file) as fp:
+        with self._file.open() as fp:
             body = json.load(fp)
             self._paths = body['paths']
             self.version = body['info']['version']
