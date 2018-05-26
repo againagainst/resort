@@ -29,3 +29,4 @@
 - [ ] Write exhaustive help system (`--help`)
 - [ ] Replace arguments with commands (`--store`->`store`)
 - [ ] Add installation procedures (setup.py)
+- [ ] Describe the application API ()
