@@ -23,7 +23,7 @@
 - [ ] Add tests and use TDD
 - [x] Docstring all classes and methods
 - [ ] Setup exhaustive logging
-- [ ] Create the app
+- [x] Create the app
 - [ ] Add versioning for the frameworks and track version of the server
 - [ ] Add error (exception) handling 
 - [ ] Write exhaustive help system (`--help`)
