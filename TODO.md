@@ -9,15 +9,15 @@
 
 ### Basic test generator
 - [ ] Module and application modes `$ python3 -m resort --help` and `$ resort --help`
-- [ ] CLI storing (`$ resort store`)
-- [ ] CLI checking (`$ resort check`)
-- [ ] Boilerplate generation (`$ resort create [prj-name]`)
+- [x] CLI storing (`$ resort --store`)
+- [x] CLI checking (`$ resort --check`)
+- [x] Boilerplate generation (`$ resort --create [prj-name]`)
 - [ ] Test generation (`$ resort generate [--unittest]`)
 - [ ] Application interface in python (`import resort`)
 
 ### Features to do:
 - [ ] MIME Type based etalon
-- [ ] A tool to compare etalon and snapshot (ResortDiff?)
+- [x] A tool to compare etalon and snapshot
 
 ### Project organization tasks
 - [ ] Add tests and use TDD

@@ -1,7 +1,4 @@
 import json
-from pprint import pprint
-
-from dictdiffer import diff
 
 import options
 import etalons
@@ -46,11 +43,13 @@ class ResortApp:
         """
         spec_reader = ServerSpecReader(opts['server']['spec']).prepare()
         client = BasicClient(server_url=opts['server']['url'])
+        differ = etalons.BaseComparator(ignored={'headers.Date'})
         eio = etalons.EtalonIO(project_dir=opts['project'])
         for method, entry in spec_reader.paths_and_methods():
-            etalon_d = eio.read(entry).dump()
-            snap_d = client.snapshot(entry, method).dump()
-            pprint(list(diff(etalon_d, snap_d)))
+            result = differ.check(eio.read(entry), client.snapshot(entry, method))
+            # pprint(list(diff(etalon_d, snap_d, ignore={'headers.Date'})))
+            print('{0}:'.format(entry))
+            print(result)
 
     @staticmethod
     def create(opts: dict):
