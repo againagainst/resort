@@ -15,10 +15,12 @@ class ResortApp:
     def launch():
         """TODO: Add description docstring
         """
-        opts = options.read_all()
+        opts = options.command_line_arguments()
         launcher = opts['mode'].select(store=ResortApp.store,
                                        check=ResortApp.check,
                                        create=ResortApp.create)
+        if not opts['mode'].is_create():
+            opts = options.read_all()
         launcher(opts)
 
     @staticmethod

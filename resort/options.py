@@ -123,14 +123,9 @@ def read_all():
     args = command_line_arguments()
     project_dir = args['project']
     # resolve config
-    default_config = None
-    if not args['mode'].is_create() and project_dir:
-        default_config = project_dir.joinpath(CONFIG_FILE_NAME)
+    default_config = project_dir.joinpath(CONFIG_FILE_NAME) if project_dir else None
     cfg_file = args.get('config', default_config)
-    if cfg_file:
-        cfg = read_config(cfg_file)
-    else:
-        cfg = dict()
+    cfg = read_config(cfg_file) if cfg_file else dict()
 
     # resolve spec
     try:
@@ -139,5 +134,5 @@ def read_all():
             spec_path = project_dir.joinpath(spec_path)
             cfg['server']['spec'] = spec_path
     except KeyError:
-        raise RuntimeError("Can not find the Server API Specification")
+        raise RuntimeError("Missing the Server API Specification")
     return {**cfg, **args}
