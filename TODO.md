@@ -17,7 +17,8 @@
 
 ### Features to do:
 - [ ] MIME Type based etalon
-- [x] A tool to compare etalon and snapshot
+- [x] A tool for comparing etalon and snapshot
+- [ ] Test scenario feature: call checks in specified order
 
 ### Project organization tasks
 - [ ] Add tests and use TDD
