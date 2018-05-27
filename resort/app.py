@@ -5,7 +5,7 @@ from dictdiffer import diff
 
 import options
 import etalons
-from base_client import BasicClient
+from client import BasicClient
 from server_spec import ServerSpecReader
 
 
