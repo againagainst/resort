@@ -2,7 +2,7 @@
 RESTful API test automation tool
 
 <img src="data/icons/resort_edit.png" alt="Resort Logo" width="250">
-<br/><sub><sup><a href="https://www.vecteezy.com/vector-art/146821-palm-tree-collection-vectors">Original Image by Vecteezy</a></sup></sub>
+<sub><sup><a href="https://www.vecteezy.com/vector-art/146821-palm-tree-collection-vectors">Original Image by Vecteezy</a></sup></sub>
 
 ## Work in progress!
 Development plan is described in the [TODO](TODO.md) list.
