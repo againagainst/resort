@@ -3,6 +3,7 @@ import pathlib
 from typing import Type
 
 from etalons import BaseEtalon, BasicHTTPResponseEtalon
+from errors import BadProjectPath
 
 
 class EtalonIO:
@@ -18,7 +19,7 @@ class EtalonIO:
     """
     def __init__(self, project_dir: pathlib.Path, make_dir=False):
         if project_dir.exists() and not project_dir.is_dir():
-            raise NotADirectoryError(project_dir)
+            raise BadProjectPath(project_dir)
         if make_dir:
             project_dir.mkdir(parents=True, exist_ok=True)
         self.project_dir = project_dir

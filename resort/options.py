@@ -9,6 +9,8 @@ import argparse
 import pathlib
 import json
 
+from errors import BadArgument, BadConfiguration
+
 
 CONFIG_FILE_NAME = 'config.json'
 APISPEC_FILE_NAME = 'apispec.json'
@@ -31,7 +33,7 @@ class ResortMode:
 
     def __init__(self, name: str):
         if name not in ResortMode.ANY:
-            raise RuntimeError("Unsupported mode", name)
+            raise BadArgument("Mode %s is not supported" % name)
         self.name = name
 
     def is_store(self) -> bool:
@@ -59,18 +61,8 @@ def make_argparser():
     """
 
     parser = argparse.ArgumentParser(
-        description='Provide --project to store an etalon')
-    parser.add_argument('-o', '--project',
-                        default=argparse.SUPPRESS,
-                        type=pathlib.Path,
-                        help='path to the project file',
-                        dest='project')
-    parser.add_argument('-c', '--config',
-                        default=argparse.SUPPRESS,
-                        type=pathlib.Path,
-                        help='path to the config file, default is "./config.json"',
-                        dest='config')
-    cmd_group = parser.add_mutually_exclusive_group()
+        description='Resort - Test automation tool for the RESTful APIs.')
+    cmd_group = parser.add_mutually_exclusive_group(required=True)
     cmd_group.add_argument("--store",
                            action="store_const",
                            const=ResortMode("store"),
@@ -83,6 +75,16 @@ def make_argparser():
                            action="store_const",
                            const=ResortMode("create"),
                            dest='mode')
+    parser.add_argument('-o', '--project',
+                        default=argparse.SUPPRESS,
+                        type=pathlib.Path,
+                        help='path to the project file',
+                        dest='project')
+    parser.add_argument('-c', '--config',
+                        default=argparse.SUPPRESS,
+                        type=pathlib.Path,
+                        help='path to the config file, default is "./config.json"',
+                        dest='config')
     return parser
 
 
@@ -134,5 +136,6 @@ def read_all():
             spec_path = project_dir.joinpath(spec_path)
             cfg['server']['spec'] = spec_path
     except KeyError:
-        raise RuntimeError("Missing the Server API Specification")
+        raise BadConfiguration("Server API Specification is not defined. "
+                               "Add server.spec section to the %s" % cfg_file)
     return {**cfg, **args}

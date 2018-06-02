@@ -2,6 +2,7 @@ import json
 
 import options
 import etalons
+from errors import ResortBaseException, BadProjectPath, BadArgument
 from client import BasicClient
 from server_spec import ServerSpecReader
 
@@ -10,6 +11,13 @@ class ResortApp:
 
     @staticmethod
     def launch():
+        try:
+            ResortApp.launch_raw()
+        except ResortBaseException as exc:
+            print(exc)
+
+    @staticmethod
+    def launch_raw():
         """TODO: Add description docstring
         """
         opts = options.command_line_arguments()
@@ -65,7 +73,14 @@ class ResortApp:
             opts (dict):
         """
         project_dir = opts['project']
-        project_dir.mkdir(parents=False, exist_ok=False)
+        # TODO: make a ResortProject class, move this functionality
+        try:
+            project_dir.mkdir(parents=False, exist_ok=False)
+        except FileNotFoundError as exc:
+            raise BadProjectPath(path=exc.filename)
+        except FileExistsError as exc:
+            raise BadArgument('project_dir - directory "%s" '
+                              'already exists.' % exc.filename)
         project_name = project_dir.stem
         config_file = project_dir.joinpath(options.CONFIG_FILE_NAME)
         apispec_file = project_dir.joinpath(options.APISPEC_FILE_NAME)
