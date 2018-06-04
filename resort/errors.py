@@ -21,6 +21,7 @@ class BadProjectPath(BadArgument):
     Args:
         path (pathlib.Path): invalid path
     """
+
     def __init__(self, path):
         super().__init__("project_dir - can not create files in %s" % path)
 
@@ -34,3 +35,9 @@ class BadConfiguration(ResortBaseException):
 
     def __init__(self, reason):
         super().__init__("Invalid configuration: %s" % reason)
+
+
+class ConnectionError(ResortBaseException):
+
+    def __init__(self, url):
+        super().__init__('Connection to the "%s" refused' % url)

@@ -5,6 +5,7 @@ import requests
 
 from etalons import BaseEtalon, BasicHTTPResponseEtalon
 from server_spec import ServerSpecReader
+from errors import ConnectionError
 
 
 class BasicClient(object):
@@ -61,5 +62,8 @@ class BasicClient(object):
 
         """
         url = urllib.parse.urljoin(self._server_url, entry)
-        return Etalon(entry=entry,
-                      response=requests.request(method, url))
+        try:
+            response = requests.request(method, url)
+        except requests.exceptions.ConnectionError:
+            raise ConnectionError(url)
+        return Etalon(entry=entry, response=response)
