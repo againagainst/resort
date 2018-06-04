@@ -1,32 +1,34 @@
 import json
 
+import daiquiri
+
+import constants
 import options
 import etalons
 from errors import ResortBaseException, BadProjectPath, BadArgument
 from client import BasicClient
 from server_spec import ServerSpecReader
 
+# setup logging
+daiquiri.setup(program_name=constants.APP_NAME)
+
 
 class ResortApp:
 
     @staticmethod
     def launch():
-        try:
-            ResortApp.launch_raw()
-        except ResortBaseException as exc:
-            print(exc)
-
-    @staticmethod
-    def launch_raw():
         """TODO: Add description docstring
         """
-        opts = options.command_line_arguments()
-        launcher = opts['mode'].select(store=ResortApp.store,
-                                       check=ResortApp.check,
-                                       create=ResortApp.create)
-        if not opts['mode'].is_create():
-            opts = options.read_all()
-        launcher(opts)
+        try:
+            opts = options.command_line_arguments()
+            launcher = opts['mode'].select(store=ResortApp.store,
+                                           check=ResortApp.check,
+                                           create=ResortApp.create)
+            if not opts['mode'].is_create():
+                opts = options.read_all()
+            launcher(opts)
+        except ResortBaseException as exc:
+            print(exc)
 
     @staticmethod
     def store(opts: dict):
@@ -82,8 +84,8 @@ class ResortApp:
             raise BadArgument('project_dir - directory "%s" '
                               'already exists.' % exc.filename)
         project_name = project_dir.stem
-        config_file = project_dir.joinpath(options.CONFIG_FILE_NAME)
-        apispec_file = project_dir.joinpath(options.APISPEC_FILE_NAME)
+        config_file = project_dir.joinpath(constants.CONFIG_FILE_NAME)
+        apispec_file = project_dir.joinpath(constants.APISPEC_FILE_NAME)
         with apispec_file.open('w') as sfp:
             json.dump(ResortApp._spec_content(project_name=project_name),
                       sfp,
@@ -99,7 +101,7 @@ class ResortApp:
 
     __default_config = {
         "server": {
-            "spec": options.APISPEC_FILE_NAME,
+            "spec": constants.APISPEC_FILE_NAME,
             "url": "http://127.0.0.1"
         }
     }

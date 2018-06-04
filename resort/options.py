@@ -10,10 +10,7 @@ import pathlib
 import json
 
 from errors import BadArgument, BadConfiguration
-
-
-CONFIG_FILE_NAME = 'config.json'
-APISPEC_FILE_NAME = 'apispec.json'
+from constants import CONFIG_FILE_NAME
 
 
 class ResortMode:
