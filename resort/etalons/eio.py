@@ -3,7 +3,7 @@ import pathlib
 from typing import Type
 
 from etalons import BaseEtalon, BasicHTTPResponseEtalon
-from errors import BadProjectPath
+from errors import BadProjectPath, EtalonPathError
 
 
 class EtalonIO:
@@ -51,6 +51,9 @@ class EtalonIO:
         etalon = Etalon(entry=entry)
         etapath = self.project_dir.joinpath(etalon.path)
 
-        with etapath.open(mode='r') as f:
-            etalon.restore_from_dict(json.load(f))
+        try:
+            with etapath.open(mode='r') as f:
+                etalon.restore_from_dict(json.load(f))
+        except FileNotFoundError:
+            raise EtalonPathError(entry)
         return etalon

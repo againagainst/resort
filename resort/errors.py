@@ -38,6 +38,22 @@ class BadConfiguration(ResortBaseException):
 
 
 class ConnectionError(ResortBaseException):
+    """Indicates that Resort is unable to connect to a server with given url
+
+    Args:
+        url (str): request url
+    """
 
     def __init__(self, url):
         super().__init__('Connection to the "%s" refused' % url)
+
+
+class EtalonPathError(ResortBaseException):
+    """Indicates that a file for given entry does not exist
+
+    Args:
+        path (str): path to the etalon file
+    """
+
+    def __init__(self, entry):
+        super().__init__('Etalon for "%s" is not found' % entry)
