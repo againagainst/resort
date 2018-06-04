@@ -105,8 +105,11 @@ def read_config(cfg_file: pathlib.Path):
     Returns:
       dict: config.json loaded
     """
-    with cfg_file.open(mode='r') as cfgf:
-        return json.load(cfgf)
+    try:
+        with cfg_file.open(mode='r') as cfgf:
+            return json.load(cfgf)
+    except FileNotFoundError:
+        raise BadArgument('--config - No such file: "%s"' % cfg_file)
 
 
 def read_all():
