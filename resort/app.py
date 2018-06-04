@@ -1,4 +1,5 @@
 import json
+import logging
 
 import daiquiri
 
@@ -10,10 +11,12 @@ from client import BasicClient
 from server_spec import ServerSpecReader
 
 # setup logging
-daiquiri.setup(program_name=constants.APP_NAME)
+daiquiri.setup(program_name=constants.APP_NAME,
+               level=logging.DEBUG if __debug__ else logging.INFO)
 
 
 class ResortApp:
+    logger = daiquiri.getLogger(constants.APP_NAME)
 
     @staticmethod
     def launch():
@@ -87,10 +90,12 @@ class ResortApp:
         config_file = project_dir.joinpath(constants.CONFIG_FILE_NAME)
         apispec_file = project_dir.joinpath(constants.APISPEC_FILE_NAME)
         with apispec_file.open('w') as sfp:
+            ResortApp.logger.info('Creating {0}'.format(apispec_file))
             json.dump(ResortApp._spec_content(project_name=project_name),
                       sfp,
                       indent=2)
         with config_file.open('w') as cfp:
+            ResortApp.logger.info('Creating {0}'.format(config_file))
             json.dump(ResortApp.__default_config, cfp, indent=2)
 
     @staticmethod
