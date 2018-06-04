@@ -1,5 +1,4 @@
 import json
-import re
 import pathlib
 
 
@@ -9,7 +8,6 @@ class ServerSpecReader(object):
     Args:
         spec_file (pathlib.Path): a full path to a spec file
     """
-    ENTRY_PREFIX = re.compile(r'^(/)')
 
     def __init__(self, spec_file):
         self._file = spec_file
@@ -39,9 +37,8 @@ class ServerSpecReader(object):
         Returns:
           a generator of paths: str
         """
-        for full_entry in self._paths.keys():
-            # '/ping/12' -> 'ping/12'
-            yield self.ENTRY_PREFIX.sub('', full_entry)
+        for entry in self._paths.keys():
+            yield entry
 
     def paths_and_methods(self):
         """Yields each (method, path) for each entry in the spec.
@@ -49,8 +46,6 @@ class ServerSpecReader(object):
         Returns:
           a generator of method, path: tuple
         """
-        for full_entry, entry_desc in self._paths.items():
-            # '/ping/12' -> 'ping/12'
-            relative_entry = self.ENTRY_PREFIX.sub('', full_entry)
+        for entry, entry_desc in self._paths.items():
             for method in entry_desc.keys():
-                yield method, relative_entry
+                yield method, entry

@@ -26,7 +26,7 @@
 - [ ] Setup exhaustive logging
 - [x] Create the app
 - [ ] Add versioning for the frameworks and track version of the server
-- [ ] Add error (exception) handling 
+- [x] Add error (exception) handling 
 - [ ] Write exhaustive help system (`--help`)
 - [ ] Replace arguments with commands (`--store`->`store`)
 - [ ] Add installation procedures (setup.py)
