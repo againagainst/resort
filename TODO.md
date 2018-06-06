@@ -14,11 +14,13 @@
 - [x] Boilerplate generation (`$ resort --create [prj-name]`)
 - [ ] Test generation (`$ resort generate [--unittest]`)
 - [ ] Application interface in python (`import resort`)
+- [ ] An ability to update etalons (`--update` options to generate diff)
 
 ### Features to do:
 - [ ] MIME Type based etalon
 - [x] A tool for comparing etalon and snapshot
 - [ ] Test scenario feature: call checks in specified order
+- [ ] Rename entity to URI (Uniform Resource Identifier)
 
 ### Project organization tasks
 - [ ] Add tests and use TDD
