@@ -1,7 +1,9 @@
+import re
 import pathlib
 
 
 class BaseEtalon(object):
+    ENTRY_PREFIX = re.compile(r'^(/)')
 
     def __init__(self, entry: str, name: str='etalon', ext: str='txt'):
         """Base class for all etalons. Represents a link between
@@ -12,7 +14,8 @@ class BaseEtalon(object):
             name [str, 'etalon']: File Name
             ext [str, 'txt']: File extension
         """
-        self._entry = entry
+        # '/ping/12' -> 'ping/12'
+        self._entry = self.ENTRY_PREFIX.sub('', entry)
         self._name = name
         self._ext = ext
 

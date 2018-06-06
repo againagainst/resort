@@ -7,20 +7,29 @@
 - [x] Create a basic etalon definition (`--store` mode)
 - [x] Create an etalon-reader (`--check` mode)
 
-### Alpha-release (python -m resort)
-- [ ] Add tests and use TDD
-- [ ] Docstring all classes and methods
-- [ ] Setup exhaustive logging
-- [ ] Create the app
-- [ ] Add error (exception) handling 
-- [ ] Write exhaustive help system (`--help`)
-- [ ] Replace arguments with commands (`--store`->`store`)
-- [ ] Add instalation procedures (setup.py)
-
-### Release: a basic test generator
+### Basic test generator
 - [ ] Module and application modes `$ python3 -m resort --help` and `$ resort --help`
-- [ ] CLI storing (`$ resort store`)
-- [ ] CLI checking (`$ resort check`)
-- [ ] Boilerplate generation (`$ resort create [prj-name]`)
+- [x] CLI storing (`$ resort --store`)
+- [x] CLI checking (`$ resort --check`)
+- [x] Boilerplate generation (`$ resort --create [prj-name]`)
 - [ ] Test generation (`$ resort generate [--unittest]`)
 - [ ] Application interface in python (`import resort`)
+- [ ] An ability to update etalons (`--update` options to generate diff)
+
+### Features to do:
+- [ ] MIME Type based etalon
+- [x] A tool for comparing etalon and snapshot
+- [ ] Test scenario feature: call checks in specified order
+- [ ] Rename entity to URI (Uniform Resource Identifier)
+
+### Project organization tasks
+- [ ] Add tests and use TDD
+- [x] Docstring all classes and methods
+- [ ] Setup exhaustive logging
+- [x] Create the app
+- [ ] Add versioning for the frameworks and track version of the server
+- [x] Add error (exception) handling 
+- [ ] Write exhaustive help system (`--help`)
+- [ ] Replace arguments with commands (`--store`->`store`)
+- [ ] Add installation procedures (setup.py)
+- [ ] Describe the application API ()

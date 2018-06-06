@@ -2,7 +2,10 @@ import json
 import pathlib
 from typing import Type
 
+import daiquiri
+
 from etalons import BaseEtalon, BasicHTTPResponseEtalon
+from errors import BadProjectPath, EtalonPathError
 
 
 class EtalonIO:
@@ -16,9 +19,11 @@ class EtalonIO:
     Raises:
         NotADirectoryError: if :project_dir: is a file
     """
+    logger = daiquiri.getLogger(__name__)
+
     def __init__(self, project_dir: pathlib.Path, make_dir=False):
         if project_dir.exists() and not project_dir.is_dir():
-            raise NotADirectoryError(project_dir)
+            raise BadProjectPath(project_dir)
         if make_dir:
             project_dir.mkdir(parents=True, exist_ok=True)
         self.project_dir = project_dir
@@ -34,6 +39,7 @@ class EtalonIO:
 
         etadir.mkdir(parents=True, exist_ok=True)
         with etapath.open(mode='w') as f:
+            self.logger.info("Writing to {0}".format(etapath))
             json.dump(etalon.dump(), f, indent=2)
 
     def read(self, entry: str, Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
@@ -50,6 +56,10 @@ class EtalonIO:
         etalon = Etalon(entry=entry)
         etapath = self.project_dir.joinpath(etalon.path)
 
-        with etapath.open(mode='r') as f:
-            etalon.restore_from_dict(json.load(f))
+        try:
+            with etapath.open(mode='r') as f:
+                self.logger.info("Reading from {0}".format(etapath))
+                etalon.restore_from_dict(json.load(f))
+        except FileNotFoundError:
+            raise EtalonPathError(entry)
         return etalon
