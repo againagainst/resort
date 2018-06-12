@@ -1,6 +1,5 @@
 # Application
-data/output/*
-data/basic-rest-test/*
+projects/*
 resort/config.json
 
 # Byte-compiled / optimized / DLL files
