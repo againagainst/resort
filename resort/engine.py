@@ -1,12 +1,9 @@
-import json
-
 import daiquiri
 
-import constants
 import etalons
-from errors import BadProjectPath, BadArgument
 from client import BasicClient
 from server_spec import ServerSpecReader
+from project import ResortProject
 
 LOG = daiquiri.getLogger(__name__)
 
@@ -51,56 +48,11 @@ class ResortEngine:
 
         Result:
         project_dir/
-            config.json
-            apispec.json
+            test_first.json - a test stub
+            config.json - optional, various project cofigurations
 
         Args:
             opts (dict):
         """
         project_dir = opts['project']
-        # TODO: make a ResortProject class, move this functionality
-        try:
-            project_dir.mkdir(parents=False, exist_ok=False)
-        except FileNotFoundError as exc:
-            raise BadProjectPath(path=exc.filename)
-        except FileExistsError as exc:
-            raise BadArgument('project_dir - directory "%s" '
-                              'already exists.' % exc.filename)
-        project_name = project_dir.stem
-        config_file = project_dir.joinpath(constants.CONFIG_FILE_NAME)
-        apispec_file = project_dir.joinpath(constants.APISPEC_FILE_NAME)
-        with apispec_file.open('w') as sfp:
-            LOG.info('Creating {0}'.format(apispec_file))
-            json.dump(ResortEngine._spec_content(project_name=project_name),
-                      sfp,
-                      indent=2)
-        with config_file.open('w') as cfp:
-            LOG.info('Creating {0}'.format(config_file))
-            json.dump(ResortEngine.__default_config, cfp, indent=2)
-
-    @staticmethod
-    def _spec_content(*, project_name):
-        spec = ResortEngine.__default_spec
-        spec['info']['title'] = project_name
-        return spec
-
-    __default_config = {
-        "server": {
-            "spec": constants.APISPEC_FILE_NAME,
-            "url": "http://127.0.0.1"
-        }
-    }
-    __default_spec = {
-        "info": {
-            "version": "1.0.0",
-            "description": ""
-        },
-        "paths": {
-            "/index.html": {
-                "get": {}
-            }
-        },
-        "tags": [],
-        "definitions": {},
-        "parameters": {}
-    }
+        return ResortProject.create(project_dir)

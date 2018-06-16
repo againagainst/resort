@@ -19,5 +19,6 @@
         "**/__pycache__/**": true,
         "**/.venv/**": true
     },
-    "autoDocstring.docstringFormat": "google"
+    "autoDocstring.docstringFormat": "google",
+    "editor.minimap.enabled": false
 }

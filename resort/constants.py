@@ -3,7 +3,6 @@ APP_DESCRIPTION = 'Resort - Test automation tool for the RESTful APIs.'
 
 
 CONFIG_FILE_NAME = 'config.json'
-APISPEC_FILE_NAME = 'apispec.json'
 
 
 class ResortMode:
