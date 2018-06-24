@@ -11,7 +11,7 @@ import pathlib
 import json
 
 from engine import ResortEngine
-from errors import BadArgument, BadConfiguration
+from errors import BadConfiguration
 from constants import APP_DESCRIPTION, CONFIG_FILE_NAME, ResortMode
 
 
@@ -30,9 +30,8 @@ def read_args():
                         dest='project')
     subparsers = parser.add_subparsers(help='TODO: commands help',
                                        dest='mode')
-    create_parser = subparsers.add_parser(ResortMode.CREATE,
-                                          help='TODO: create help')
-    create_parser.set_defaults(command=ResortEngine.create)
+    subparsers.add_parser(ResortMode.CREATE,
+                          help='Creates a project directory, --project is required')
     store_parser = subparsers.add_parser(ResortMode.STORE,
                                          help='TODO: store help')
     store_parser.set_defaults(command=ResortEngine.store)
@@ -43,10 +42,12 @@ def read_args():
 
 
 def read_config(cfg_file: pathlib.Path):
-    """
+    """Reads the given config file
+
     Args:
       cfg_file: pathlib.Path:
       full path to the configuration file
+
     Returns:
       dict: config.json loaded
     """
@@ -54,18 +55,30 @@ def read_config(cfg_file: pathlib.Path):
         with cfg_file.open(mode='r') as cfgf:
             return json.load(cfgf)
     except FileNotFoundError:
-        raise BadArgument('--config - No such file: "%s"' % cfg_file)
+        raise BadConfiguration('No such file: "%s"' % cfg_file)
+
+
+def resolve_test_files(project_dir: pathlib.Path=None, filetype='json'):
+    """Finds all test_* files in the project directory.
+
+    Args:
+        project_dir: pathlib.Path:  full path to the project
+    Returns:
+        list: of pathlib.Paths to each test_* files
+    """
+    if project_dir is None:
+        args = vars(read_args())
+        project_dir = args['project']
+
+    return list(project_dir.glob('test_*.{filetype}'.format(filetype=filetype)))
 
 
 def read_all():
     """Convenient way to get all the options specified by user.
     Note, that CLI args has higher priority than config options.
 
-    Args:
-      cfg_file_path: str (Default value = 'config.json'):
-      full path to the configuration file
     Returns:
-      dict: cli args + config options
+      dict: cli args + config options + list of test files
     """
     args = vars(read_args())
     # resolve config
@@ -73,14 +86,5 @@ def read_all():
     default_config = project_dir.joinpath(CONFIG_FILE_NAME)
     cfg_file = args.get('config', default_config)
     cfg = read_config(cfg_file) if cfg_file else dict()
-
-    # resolve spec
-    try:
-        spec_path = pathlib.Path(cfg['server']['spec'])
-        if not spec_path.is_absolute():
-            spec_path = project_dir.joinpath(spec_path)
-            cfg['server']['spec'] = spec_path
-    except KeyError:
-        raise BadConfiguration("Server API Specification is not defined. "
-                               "Add server.spec section to the %s" % cfg_file)
-    return {**cfg, **args}
+    tests = resolve_test_files(project_dir=project_dir)
+    return {**cfg, **args, "tests": tests}

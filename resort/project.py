@@ -23,18 +23,25 @@ class ResortProject(object):
 
     @classmethod
     def create(cls, project_dir: pathlib.Path, make_config: bool=False):
-        """TODO: method description
+        """Creates a project directory:
+        resort/app.py --project=/path/to/project_dir create
+
+        Result:
+            project_dir/
+                test_first.json - a test stub
+                config.json - optional, various project cofigurations
 
         Args:
-            project_dir (pathlib.Path): [description]
-            make_config (bool, optional): Defaults to False. [description]
+            project_dir (pathlib.Path): [full path to project]
+            make_config (bool, optional): Defaults to False. [generates the config.json
+            stub if True]
 
         Raises:
             BadProjectPath: [description]
             BadArgument: [description]
 
         Returns:
-            [type]: [description]
+            [ResortProject]: [A project instance]
         """
         try:
             project_dir.mkdir(parents=False, exist_ok=False)

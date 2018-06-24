@@ -18,12 +18,11 @@ class BasicClient(object):
         spec_file [str, None]
     """
 
-    def __init__(self, server_url: str, spec_file: str=None):
-        self._server_url = server_url
-        if spec_file is not None:
-            self.server_spec = ServerSpecReader(spec_file=spec_file)
+    def __init__(self, spec_file: str):
+        self.server_spec = ServerSpecReader(spec_file=spec_file)
 
-    def prepare(self):
+    @classmethod
+    def prepare(cls, spec_file: str):
         """Load a API Spec to the client's ServerSpecReader.
 
         TODO: make a static constructor
@@ -31,8 +30,9 @@ class BasicClient(object):
         client = BasicClient().prepare()
 
         """
-        self.server_spec.prepare()
-        return self
+        client = cls(spec_file)
+        client.server_spec.prepare()
+        return client
 
     def snapshot_etalons(self, Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
         """Make etalon (a "snapshot") for each entry in the spec
@@ -61,7 +61,7 @@ class BasicClient(object):
         Returns:
 
         """
-        url = urllib.parse.urljoin(self._server_url, entry)
+        url = urllib.parse.urljoin(self.server_spec.url, entry)
         try:
             response = requests.request(method, url)
         except requests.exceptions.ConnectionError:

@@ -27,6 +27,7 @@ class ServerSpecReader(object):
         with self._file.open() as fp:
             body = json.load(fp)
             self._paths = body['paths']
+            self.url = body['server']['url']
             self.version = body['info']['version']
             self.vprefix = pathlib.Path('v' + self.version)
         return self
@@ -46,6 +47,5 @@ class ServerSpecReader(object):
         Returns:
           a generator of method, path: tuple
         """
-        for entry, entry_desc in self._paths.items():
-            for method in entry_desc.keys():
-                yield method, entry
+        for entry, method in self._paths:
+            yield method, entry

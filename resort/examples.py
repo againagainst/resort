@@ -1,5 +1,5 @@
 """
-TODO: Add module/project description
+The following examples describe the basic idea, but the code is dead.
 """
 from pprint import pprint
 
