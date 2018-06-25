@@ -91,7 +91,7 @@ class ResortProject(object):
             "version": "1.0.0"
         },
         "server": {
-            "url": "http://127.0.0.1"
+            "url": "http://127.0.0.1:8888"
         },
         "paths": [
             ["/index.html", "get"]

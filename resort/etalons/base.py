@@ -38,3 +38,11 @@ class BaseEtalon(object):
     @property
     def path(self):
         return self.dir.joinpath(self.file_name)
+
+    @staticmethod
+    def encode_filepath(url: str):
+        return url.replace('/', ' ')
+
+    @staticmethod
+    def decode_filepath(path: str):
+        return path.replace(' ', '/')
