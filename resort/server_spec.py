@@ -9,42 +9,43 @@ class ServerSpecReader(object):
         spec_file (pathlib.Path): a full path to a spec file
     """
 
-    def __init__(self, spec_file):
-        self._file = spec_file
+    def __init__(self):
+        self._file = None
         self._paths = None
         self.version = None
         self.vprefix = None
 
-    def prepare(self):
+    @classmethod
+    def prepare(cls, spec_file: pathlib.Path):
         """Reads the specification from the spec_file.
         TODO: separate spec version and resort's project version
-        TODO: make a static constructor
 
         Returns: self to create a prepared client
-            self: spec = ServerSpecReader().prepare()
+            self: spec = ServerSpecReader.prepare()
         """
+        reader = cls()
+        reader._file = spec_file
 
-        with self._file.open() as fp:
+        with reader._file.open() as fp:
             body = json.load(fp)
-            self._paths = self.add_none_payload(body['paths'])
-            self.url = body['server']['url']
-            self.test_name = body["info"]["title"]
-            self.version = body['info']['version']
-            self.vprefix = pathlib.Path('v' + self.version)
-        return self
+            reader._paths = reader.ensure_payload(body['paths'])
+            reader.url = body['server']['url']
+            reader.test_name = body["info"]["title"]
+            reader.version = body['info']['version']
+            reader.vprefix = pathlib.Path('v' + reader.version)
+        return reader
 
-    def add_none_payload(self, paths: list):
-        """[["/index.html", "get"], ["/api/user", "post", {...}]] ->
+    def ensure_payload(self, paths: list):
+        """Converts
+        [["/index.html", "get"], ["/api/user", "post", {...}]]
+        to
         [["/index.html", "get", None], ["/api/user", "post", {...}]]
-        So you can unpack them.
+        So it's easier to unpack them.
 
         Args:
             paths (list): [list of test entries]
         """
-        for entry in paths:
-            if len(entry) == 2:
-                entry.append(None)
-        return paths
+        return list(entry if len(entry) == 3 else entry + [None] for entry in paths)
 
     def paths(self):
         """Yields each entry in the spec.

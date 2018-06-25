@@ -9,30 +9,15 @@ from errors import ConnectionError
 
 
 class BasicClient(object):
-    """Establishes connection to the server wth given url.
-    With spec_file provided it can make snapshot for each
-    entry described in the spec.
+    """Establishes connection to the url from the server_spec
+    It can make snapshots of entries that described in the spec.
 
     Args:
-        server_url (str)
-        spec_file [str, None]
+        server_spec (ServerSpecReader)
     """
 
-    def __init__(self, spec_file: str):
-        self.server_spec = ServerSpecReader(spec_file=spec_file)
-
-    @classmethod
-    def prepare(cls, spec_file: str):
-        """Load a API Spec to the client's ServerSpecReader.
-
-        TODO: make a static constructor
-        Returns: self to create a prepared client:
-        client = BasicClient().prepare()
-
-        """
-        client = cls(spec_file)
-        client.server_spec.prepare()
-        return client
+    def __init__(self, server_spec: ServerSpecReader):
+        self.server_spec = server_spec
 
     def snapshot_etalons(self, Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
         """Make etalon (a "snapshot") for each entry in the spec

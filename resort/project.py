@@ -4,6 +4,7 @@ import pathlib
 import daiquiri
 
 import constants
+import options
 from errors import BadProjectPath, BadArgument
 
 LOG = daiquiri.getLogger(__name__)
@@ -13,13 +14,20 @@ class ResortProject(object):
     """TODO: class description
 
     Args:
-        name ([type]): [description]
+        name ([type]): Project name
         config (dict, optional): Defaults to None. [description]
+        test_specs (tuple): list of test_specs files (aka test_* files)
     """
 
-    def __init__(self, name, config: dict=None):
-        self.name = name
+    def __init__(self, project_dir: pathlib.Path,
+                 name: str=None, test_specs: tuple=None, config: dict=None):
+        # pkey, id
+        self.project_dir = project_dir
+        # optional
+        self.name = name or project_dir.stem
+        self.test_specs = test_specs or tuple()
         self.config = config or ResortProject.__default_config
+        self.ignored = {'headers.Date'}
 
     @classmethod
     def create(cls, project_dir: pathlib.Path, make_config: bool=False):
@@ -50,7 +58,6 @@ class ResortProject(object):
         except FileExistsError as exc:
             raise BadArgument('project_dir - directory "%s" already exists.' % exc.filename)
 
-        project_name = project_dir.stem
         test_file = project_dir.joinpath(ResortProject.__default_testfile_name)
         with test_file.open('w') as sfp:
             LOG.info('Creating {0}'.format(test_file))
@@ -61,10 +68,10 @@ class ResortProject(object):
             with config_file.open('w') as cfp:
                 LOG.info('Creating {0}'.format(config_file))
                 json.dump(ResortProject.__default_config, cfp, indent=2)
-        return cls(project_name)
+        return cls(project_dir)
 
     @classmethod
-    def read(cls, project_dir: pathlib.Path):
+    def read(cls, project_dir: pathlib.Path, opts: dict):
         """TODO: method description
 
         Args:
@@ -73,10 +80,10 @@ class ResortProject(object):
         Returns:
             [type]: [description]
         """
-        project_name = project_dir.stem
-        # TODO: read config
-        # TODO: make list of test files
-        return cls(project_name)
+        default_config = project_dir.joinpath(options.CONFIG_FILE_NAME)
+        return cls(project_dir,
+                   test_specs=options.resolve_test_files(project_dir=project_dir),
+                   config=options.read_config(default_config))
 
     __default_config = {
         'exclude': []
