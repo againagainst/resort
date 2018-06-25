@@ -21,7 +21,8 @@ class BasicHTTPResponseEtalon(etalons.base.BaseEtalon):
     _EXT = 'json'
     _STR = 'Response:\n{headers}\nBody:\n{body}'
 
-    def __init__(self, entry: str, response: requests.Response=None, **kwargs):
+    def __init__(self, entry: str, name: str,
+                 response: requests.Response=None, **kwargs):
         super().__init__(entry=entry, ext=BasicHTTPResponseEtalon._EXT, **kwargs)
         if response is not None:
             self._headers = response.headers

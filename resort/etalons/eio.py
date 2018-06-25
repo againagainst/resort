@@ -54,7 +54,7 @@ class EtalonIO:
             Etalon: object
         """
 
-        etalon = Etalon(entry=entry)
+        etalon = Etalon(entry=entry, name=self.server_spec.test_name)
         etapath = self.project_dir.joinpath(etalon.path)
 
         try:

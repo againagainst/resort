@@ -28,7 +28,8 @@ class ResortEngine:
             differ = etalons.BaseComparator(ignored=project.ignored)
             eio = etalons.EtalonIO(project_dir=project.project_dir)
             for method, entry in spec_reader.paths_and_methods():
-                result = differ.check(eio.read(entry), client.snapshot(entry, method))
+                result = differ.check(eio.read(entry),
+                                      client.snapshot(entry, method))
                 # pprint(list(diff(etalon_d, snap_d, ignore={'headers.Date'})))
                 print('{0}:'.format(entry))
                 print(result)

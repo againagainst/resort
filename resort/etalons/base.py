@@ -5,7 +5,7 @@ import pathlib
 class BaseEtalon(object):
     ENTRY_PREFIX = re.compile(r'^(/)')
 
-    def __init__(self, entry: str, name: str='etalon', ext: str='txt'):
+    def __init__(self, entry: str, name: str, ext: str='txt'):
         """Base class for all etalons. Represents a link between
         entry in the spec and it's path in the snapshots directory
 
