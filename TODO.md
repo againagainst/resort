@@ -21,15 +21,16 @@
 - [x] A tool for comparing etalon and snapshot
 - [ ] Test scenario feature: call checks in specified order
 - [ ] Rename entity to URI (Uniform Resource Identifier)
+- [ ] Implement test system based on `tavern` format
 
 ### Project organization tasks
 - [ ] Add tests and use TDD
 - [x] Docstring all classes and methods
-- [ ] Setup exhaustive logging
+- [x] Setup logging (daiquiri)
 - [x] Create the app
 - [ ] Add versioning for the frameworks and track version of the server
 - [x] Add error (exception) handling 
 - [ ] Write exhaustive help system (`--help`)
-- [ ] Replace arguments with commands (`--store`->`store`)
+- [x] Replace arguments with commands (`--store`->`store`)
 - [ ] Add installation procedures (setup.py)
 - [ ] Describe the application API ()

@@ -6,95 +6,40 @@ server.url - address of a test server
 server.spec - definition of a test server
 '''
 import argparse
+import os
 import pathlib
 import json
 
+from engine import ResortEngine
 from errors import BadArgument, BadConfiguration
-from constants import CONFIG_FILE_NAME
+from constants import APP_DESCRIPTION, CONFIG_FILE_NAME, ResortMode
 
 
-class ResortMode:
-    """Mode of the application
-
-    Args:
-        name (str): mode name, can be
-        `store`, `check` or `create`
-
-    Raises:
-        RuntimeError: if the given mode name is unknown
-    """
-    STORE = 'store'
-    CHECK = 'check'
-    CREATE = 'create'
-    ANY = {STORE, CHECK, CREATE}
-
-    def __init__(self, name: str):
-        if name not in ResortMode.ANY:
-            raise BadArgument("Mode %s is not supported" % name)
-        self.name = name
-
-    def is_store(self) -> bool:
-        return self.name == ResortMode.STORE
-
-    def is_check(self) -> bool:
-        return self.name == ResortMode.CHECK
-
-    def is_create(self) -> bool:
-        return self.name == ResortMode.CREATE
-
-    def select(self, **kwargs):
-        return kwargs[self.name]
-
-    def __repr__(self):
-        return 'ResortMode({!r})'.format(self.name)
-
-
-def make_argparser():
+def read_args():
     """Setups the argparse.ArgumentParser to parse all
     available options for the application
 
     Returns:
         ArgumentParser: parser
     """
-
-    parser = argparse.ArgumentParser(
-        description='Resort - Test automation tool for the RESTful APIs.')
-    cmd_group = parser.add_mutually_exclusive_group(required=True)
-    cmd_group.add_argument("--store",
-                           action="store_const",
-                           const=ResortMode("store"),
-                           dest='mode')
-    cmd_group.add_argument("--check",
-                           action="store_const",
-                           const=ResortMode("check"),
-                           dest='mode')
-    cmd_group.add_argument("--create",
-                           action="store_const",
-                           const=ResortMode("create"),
-                           dest='mode')
-    parser.add_argument('-o', '--project',
-                        default=argparse.SUPPRESS,
+    parser = argparse.ArgumentParser(description=APP_DESCRIPTION)
+    parser.add_argument('-p', '--project',
+                        default=pathlib.Path(os.getcwd()),
                         type=pathlib.Path,
-                        help='path to the project file',
+                        help='path to the project directory',
                         dest='project')
-    parser.add_argument('-c', '--config',
-                        default=argparse.SUPPRESS,
-                        type=pathlib.Path,
-                        help='path to the config file, default is "./config.json"',
-                        dest='config')
-    return parser
-
-
-def command_line_arguments():
-    """
-    Raises:
-        RuntimeError: when user tries to `store` and
-        `check` at the same time
-    Returns:
-        dict: arguments
-    """
-    parser = make_argparser()
-    return vars(parser.parse_args())
+    subparsers = parser.add_subparsers(help='TODO: commands help',
+                                       dest='mode')
+    create_parser = subparsers.add_parser(ResortMode.CREATE,
+                                          help='TODO: create help')
+    create_parser.set_defaults(command=ResortEngine.create)
+    store_parser = subparsers.add_parser(ResortMode.STORE,
+                                         help='TODO: store help')
+    store_parser.set_defaults(command=ResortEngine.store)
+    check_parser = subparsers.add_parser(ResortMode.CHECK,
+                                         help='TODO:  check help')
+    check_parser.set_defaults(command=ResortEngine.check)
+    return parser.parse_args()
 
 
 def read_config(cfg_file: pathlib.Path):
@@ -122,10 +67,10 @@ def read_all():
     Returns:
       dict: cli args + config options
     """
-    args = command_line_arguments()
-    project_dir = args['project']
+    args = vars(read_args())
     # resolve config
-    default_config = project_dir.joinpath(CONFIG_FILE_NAME) if project_dir else None
+    project_dir = args['project']
+    default_config = project_dir.joinpath(CONFIG_FILE_NAME)
     cfg_file = args.get('config', default_config)
     cfg = read_config(cfg_file) if cfg_file else dict()
 
