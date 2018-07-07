@@ -23,6 +23,7 @@
 - [ ] Rename entity to URI (Uniform Resource Identifier)
 - [ ] Implement test system based on `tavern` format
 - [ ] Support names for tests' etalons (test_*.json['info']['title'])
+- [ ] Support situation when test files were changed after teh store action. (warning on check)
 
 ### Project organization tasks
 - [ ] Add tests and use TDD

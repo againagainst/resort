@@ -56,6 +56,9 @@ class EchoHander(tornado.web.RequestHandler):
                 self.set_status(HTTPStatus.NO_CONTENT)
         self.finish()
 
+    def post(self, entity=None):
+        self.write(self.request.body)
+
 
 def serve_basic_rest_server():
     logging.basicConfig(level=logging.DEBUG)
