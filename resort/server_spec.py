@@ -30,7 +30,7 @@ class ServerSpecReader(object):
             body = json.load(fp)
             reader._paths = reader.ensure_payload(body['paths'])
             reader.url = body['server']['url']
-            reader.test_name = body["info"].get("title", None)
+            # reader.test_name = body["info"].get("title", None)
             reader.version = body['info']['version']
             reader.vprefix = pathlib.Path('v' + reader.version)
         return reader

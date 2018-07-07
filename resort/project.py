@@ -11,11 +11,11 @@ LOG = daiquiri.getLogger(__name__)
 
 
 class ResortProject(object):
-    """TODO: class description
+    """Represents a project of the Resort tool.
 
     Args:
-        name ([type]): Project name
-        config (dict, optional): Defaults to None. [description]
+        name (str, optional): Defaults to stem of the project_dir
+        config (dict, optional): Defaults to None.
         test_specs (tuple): list of test_specs files (aka test_* files)
     """
 
@@ -72,18 +72,37 @@ class ResortProject(object):
 
     @classmethod
     def read(cls, project_dir: pathlib.Path, opts: dict):
-        """TODO: method description
+        """Reads projects configuration (config) and reolves test files (specs).
 
         Args:
-            project_dir (pathlib.Path): [description]
+            project_dir (pathlib.Path): path to the project
 
         Returns:
-            [type]: [description]
+            ResortProject: instance of the class
         """
         default_config = project_dir.joinpath(options.CONFIG_FILE_NAME)
         return cls(project_dir,
                    test_specs=options.resolve_test_files(project_dir=project_dir),
                    config=options.read_config(default_config))
+
+    def resolve_project_dir(self, make_dir=False):
+        """Checks if project dir can be created:
+        - self.project_dir is not an existing file
+
+            make_dir (bool, optional): Defaults to False. Creates directory,
+            does nothing if the directory exists.
+
+        Raises:
+            BadProjectPath: if self.project_dir is invalid
+
+        Returns:
+            pathlib.Path: self.project_dir
+        """
+        if self.project_dir.exists() and not self.project_dir.is_dir():
+            raise BadProjectPath(self.project_dir)
+        if make_dir:
+            self.project_dir.mkdir(parents=True, exist_ok=True)
+        return self.project_dir
 
     __default_config = {
         'exclude': []
@@ -93,7 +112,6 @@ class ResortProject(object):
 
     __default_testfile = {
         "info": {
-            "title": "unknown",
             "description": "generated test stub",
             "version": "1.0.0"
         },

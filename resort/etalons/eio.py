@@ -1,11 +1,11 @@
 import json
-import pathlib
 from typing import Type
 
 import daiquiri
 
+from project import ResortProject
 from etalons import BaseEtalon, BasicHTTPResponseEtalon
-from errors import BadProjectPath, EtalonPathError
+from errors import EtalonPathError
 
 LOG = daiquiri.getLogger(__name__)
 
@@ -22,12 +22,9 @@ class EtalonIO:
         NotADirectoryError: if :project_dir: is a file
     """
 
-    def __init__(self, project_dir: pathlib.Path, make_dir=False):
-        if project_dir.exists() and not project_dir.is_dir():
-            raise BadProjectPath(project_dir)
-        if make_dir:
-            project_dir.mkdir(parents=True, exist_ok=True)
-        self.project_dir = project_dir
+    def __init__(self, project: ResortProject, make_dir=False):
+        self.project = project
+        self.project_dir = self.project.resolve_project_dir(make_dir=make_dir)
 
     def save(self, etalon: BaseEtalon):
         """Writes :etalon: to the file
@@ -53,8 +50,7 @@ class EtalonIO:
         Returns:
             Etalon: object
         """
-
-        etalon = Etalon(entry=entry, name=self.server_spec.test_name)
+        etalon = Etalon(entry=entry)
         etapath = self.project_dir.joinpath(etalon.path)
 
         try:

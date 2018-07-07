@@ -51,4 +51,4 @@ class BasicClient(object):
             response = requests.request(method, url)
         except requests.exceptions.ConnectionError:
             raise ConnectionError(url)
-        return Etalon(entry=entry, name=self.server_spec.test_name, response=response)
+        return Etalon(entry=entry, response=response)

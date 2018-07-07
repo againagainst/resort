@@ -19,9 +19,10 @@
 ### Features to do:
 - [ ] MIME Type based etalon
 - [x] A tool for comparing etalon and snapshot
-- [ ] Test scenario feature: call checks in specified order
+- [x] Test scenario feature: call checks in specified order
 - [ ] Rename entity to URI (Uniform Resource Identifier)
 - [ ] Implement test system based on `tavern` format
+- [ ] Support names for tests' etalons (test_*.json['info']['title'])
 
 ### Project organization tasks
 - [ ] Add tests and use TDD
@@ -33,4 +34,4 @@
 - [ ] Write exhaustive help system (`--help`)
 - [x] Replace arguments with commands (`--store`->`store`)
 - [ ] Add installation procedures (setup.py)
-- [ ] Describe the application API ()
+- [ ] Describe the application API
