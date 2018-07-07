@@ -14,7 +14,7 @@ class EtalonIO:
     """File system layer. Reads/writes etalons.
 
     Args:
-        project_dir (pathlib.Path): project directory
+        project (ResortProject): a project instance
         make_dir [bool, False]: If True, resort won't complain
         about missing directories, but try to create them.
 

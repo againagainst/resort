@@ -16,7 +16,7 @@ class ResortEngine:
             LOG.info('Storing: ' + str(each_test))
             spec_reader = ServerSpecReader.prepare(spec_file=each_test)
             client = BasicClient(spec_reader)
-            eio = etalons.EtalonIO(project_dir=project.project_dir, make_dir=True)
+            eio = etalons.EtalonIO(project=project, make_dir=True)
             for etalon in client.snapshot_etalons():
                 eio.save(etalon)
 
