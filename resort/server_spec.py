@@ -48,19 +48,10 @@ class ServerSpecReader(object):
         return list(entry if len(entry) == 3 else entry + [None] for entry in paths)
 
     def paths(self):
-        """Yields each entry in the spec.
-
-        Returns:
-          a generator of paths: str
-        """
-        for entry, _, _ in self._paths:
-            yield entry[0]
-
-    def paths_and_methods(self):
-        """Yields each (method, path) for each entry in the spec.
+        """Yields method, path, payload for each entry in the spec.
 
         Returns:
           a generator of method, path: tuple
         """
         for entry, method, payload in self._paths:
-            yield method, entry
+            yield method, entry, payload

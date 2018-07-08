@@ -20,6 +20,10 @@ class BaseEtalon(object):
         self._ext = ext
 
     @property
+    def entry(self):
+        return self._entry
+
+    @property
     def name(self):
         return self._name
 
