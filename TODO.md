@@ -24,8 +24,9 @@
 - [x] Test scenario feature: call checks in specified order
 - [ ] Rename entity to URI (Uniform Resource Identifier)
 - [ ] Implement test system based on `tavern` format
-- [ ] Support names for tests' etalons (test_*.json['info']['title'])
+- [x] Support names for tests' etalons (test_*.json['info']['title'])
 - [ ] Support situation when test files were changed after teh store action. (warning on check)
+- [ ] Make `etalon-id` structure that combines `entry: str` and `name: str`
 
 ### Project organization tasks
 - [ ] Add tests and use TDD

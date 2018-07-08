@@ -1,10 +1,10 @@
 import json
-from typing import Type
+import copy
 
 import daiquiri
 
 from project import ResortProject
-from etalons import BaseEtalon, BasicHTTPResponseEtalon
+from etalons import BaseEtalon
 from errors import EtalonPathError
 
 LOG = daiquiri.getLogger(__name__)
@@ -40,17 +40,17 @@ class EtalonIO:
             LOG.info("Writing to {0}".format(etapath))
             json.dump(etalon.dump(), f, indent=2)
 
-    def read(self, entry: str, Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
-        """Reads etalon identified by :entry: from it's file.
+    def restore(self, snapshot: BaseEtalon):
+        """Makes a copy of the given snapshot, then
+        restores it's data from the etalon file.
 
         Args:
-            entry (str): API entry from server spec
-            Etalon: Constructor (Default is BasicHTTPResponseEtalon)
+            snapshot (BaseEtalon): etalon structure to restore from the disk
 
         Returns:
-            Etalon: object
+            BaseEtalon: etalon object
         """
-        etalon = Etalon(entry=entry)
+        etalon = copy.deepcopy(snapshot)
         etapath = self.project_dir.joinpath(etalon.path)
 
         try:
@@ -58,5 +58,5 @@ class EtalonIO:
                 LOG.info("Reading from {0}".format(etapath))
                 etalon.restore_from_dict(json.load(f))
         except FileNotFoundError:
-            raise EtalonPathError(entry)
+            raise EtalonPathError(etalon.path)
         return etalon

@@ -30,7 +30,8 @@ class ServerSpecReader(object):
             body = json.load(fp)
             reader._paths = reader.ensure_payload(body['paths'])
             reader.url = body['server']['url']
-            # reader.test_name = body["info"].get("title", None)
+            info_title = body["info"].get("title", None)
+            reader.test_name = info_title or reader._file.stem 
             reader.version = body['info']['version']
             reader.vprefix = pathlib.Path('v' + reader.version)
         return reader
@@ -53,5 +54,8 @@ class ServerSpecReader(object):
         Returns:
           a generator of method, path: tuple
         """
-        for entry, method, payload in self._paths:
-            yield method, entry, payload
+        for entryid, (entry, method, payload) in enumerate(self._paths):
+            yield entryid, method, entry, payload
+
+    def make_name(self, entryid):
+        return "{0}_{1}".format(self.test_name, entryid)

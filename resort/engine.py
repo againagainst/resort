@@ -27,9 +27,9 @@ class ResortEngine:
             differ = etalons.BaseComparator(ignored=project.ignored)
             eio = etalons.EtalonIO(project=project)
             for snapshot in client.snapshot_etalons():
-                etalon = eio.read(snapshot.entry)
+                etalon = eio.restore(snapshot)
                 result = differ.check(etalon, snapshot)
-                print('\n{0}:'.format(etalon.entry))
+                print('{0} | {1}:'.format(etalon.file_name, etalon.entry))
                 assert etalon.entry == snapshot.entry
                 print(result)
 

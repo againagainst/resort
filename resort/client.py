@@ -30,11 +30,13 @@ class BasicClient(object):
         Returns: A generator of etalons
 
         """
-        for method, each_entry, payload in self.server_spec.paths():
-            requests_kw = dict(data=payload)
-            yield self.snapshot(each_entry, method, requests_kw=requests_kw)
+        for entryid, method, each_entry, payload in self.server_spec.paths():
+            yield self.snapshot(entry=each_entry,
+                                method=method,
+                                name=self.server_spec.make_name(entryid),
+                                requests_kw=dict(json=payload))
 
-    def snapshot(self, entry: str, method: str,
+    def snapshot(self, entry: str, method: str, name: str,
                  requests_kw=None,
                  Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
         """Makes etalon, a "snapshot" of response from the server
@@ -50,11 +52,7 @@ class BasicClient(object):
         """
         url = urllib.parse.urljoin(self.server_spec.url, entry)
         try:
-            # kw = {k: v for k, v
-            #       in dict(data=data, json=json).items()
-            #       if v is not None
-            #       }
             response = requests.request(method=method, url=url, **requests_kw)
         except requests.exceptions.ConnectionError:
             raise ConnectionError(url)
-        return Etalon(entry=entry, response=response)
+        return Etalon(entry=entry, name=name, response=response)
