@@ -4,6 +4,8 @@ import daiquiri
 
 import constants
 import options
+from engine import ResortEngine
+from project import ResortProject
 from errors import ResortBaseException
 
 # setup logging
@@ -21,11 +23,11 @@ class ResortApp:
         """
         try:
             args = options.read_args()
-            if args.mode.lower() != constants.ResortMode.CREATE:
-                opts = options.read_all()
+            if args.mode.lower() == constants.ResortMode.CREATE:
+                ResortProject.create(args.project, make_config=True)
             else:
-                opts = vars(args)
-            args.command(opts)
+                project = ResortProject.read(args.project, opts=options.read_all())
+                ResortEngine.command(args, project)
         except ResortBaseException as exc:
             LOG.warning(exc)
 

@@ -1,9 +1,9 @@
 import requests
 
-import etalons.base
+from etalons.base import BaseEtalon
 
 
-class BasicHTTPResponseEtalon(etalons.base.BaseEtalon):
+class BasicHTTPResponseEtalon(BaseEtalon):
     """Basic etalon, represents a requests.Response as json:
     ```
     {
@@ -13,6 +13,7 @@ class BasicHTTPResponseEtalon(etalons.base.BaseEtalon):
       "body": ...
     }
     ```
+    name: test_name_N_basic.et.json
 
     Args:
         entry (str): - spec entry.
@@ -21,8 +22,12 @@ class BasicHTTPResponseEtalon(etalons.base.BaseEtalon):
     _EXT = 'json'
     _STR = 'Response:\n{headers}\nBody:\n{body}'
 
-    def __init__(self, entry: str, response: requests.Response=None):
-        super().__init__(entry=entry, ext=BasicHTTPResponseEtalon._EXT)
+    def __init__(self, entry: str, name: str=None,
+                 response: requests.Response=None, **kwargs):
+        super().__init__(entry=entry,
+                         name="{name}_basic".format(name=name),
+                         ext=BasicHTTPResponseEtalon._EXT,
+                         **kwargs)
         if response is not None:
             self._headers = response.headers
             self._body = response.text

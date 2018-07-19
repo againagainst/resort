@@ -1,11 +1,11 @@
 import json
-import pathlib
-from typing import Type
+import copy
 
 import daiquiri
 
-from etalons import BaseEtalon, BasicHTTPResponseEtalon
-from errors import BadProjectPath, EtalonPathError
+from project import ResortProject
+from etalons import BaseEtalon
+from errors import EtalonPathError
 
 LOG = daiquiri.getLogger(__name__)
 
@@ -14,7 +14,7 @@ class EtalonIO:
     """File system layer. Reads/writes etalons.
 
     Args:
-        project_dir (pathlib.Path): project directory
+        project (ResortProject): a project instance
         make_dir [bool, False]: If True, resort won't complain
         about missing directories, but try to create them.
 
@@ -22,12 +22,9 @@ class EtalonIO:
         NotADirectoryError: if :project_dir: is a file
     """
 
-    def __init__(self, project_dir: pathlib.Path, make_dir=False):
-        if project_dir.exists() and not project_dir.is_dir():
-            raise BadProjectPath(project_dir)
-        if make_dir:
-            project_dir.mkdir(parents=True, exist_ok=True)
-        self.project_dir = project_dir
+    def __init__(self, project: ResortProject, make_dir=False):
+        self.project = project
+        self.project_dir = self.project.resolve_project_dir(make_dir=make_dir)
 
     def save(self, etalon: BaseEtalon):
         """Writes :etalon: to the file
@@ -43,18 +40,17 @@ class EtalonIO:
             LOG.info("Writing to {0}".format(etapath))
             json.dump(etalon.dump(), f, indent=2)
 
-    def read(self, entry: str, Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
-        """Reads etalon identified by :entry: from it's file.
+    def restore(self, snapshot: BaseEtalon):
+        """Makes a copy of the given snapshot, then
+        restores it's data from the etalon file.
 
         Args:
-            entry (str): API entry from server spec
-            Etalon: Constructor (Default is BasicHTTPResponseEtalon)
+            snapshot (BaseEtalon): etalon structure to restore from the disk
 
         Returns:
-            Etalon: object
+            BaseEtalon: etalon object
         """
-
-        etalon = Etalon(entry=entry)
+        etalon = copy.deepcopy(snapshot)
         etapath = self.project_dir.joinpath(etalon.path)
 
         try:
@@ -62,5 +58,5 @@ class EtalonIO:
                 LOG.info("Reading from {0}".format(etapath))
                 etalon.restore_from_dict(json.load(f))
         except FileNotFoundError:
-            raise EtalonPathError(entry)
+            raise EtalonPathError(etalon.path)
         return etalon

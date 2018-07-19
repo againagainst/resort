@@ -9,30 +9,15 @@ from errors import ConnectionError
 
 
 class BasicClient(object):
-    """Establishes connection to the server wth given url.
-    With spec_file provided it can make snapshot for each
-    entry described in the spec.
+    """Establishes connection to the url from the server_spec
+    It can make snapshots of entries that described in the spec.
 
     Args:
-        server_url (str)
-        spec_file [str, None]
+        server_spec (ServerSpecReader)
     """
 
-    def __init__(self, server_url: str, spec_file: str=None):
-        self._server_url = server_url
-        if spec_file is not None:
-            self.server_spec = ServerSpecReader(spec_file=spec_file)
-
-    def prepare(self):
-        """Load a API Spec to the client's ServerSpecReader.
-
-        TODO: make a static constructor
-        Returns: self to create a prepared client:
-        client = BasicClient().prepare()
-
-        """
-        self.server_spec.prepare()
-        return self
+    def __init__(self, server_spec: ServerSpecReader):
+        self.server_spec = server_spec
 
     def snapshot_etalons(self, Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
         """Make etalon (a "snapshot") for each entry in the spec
@@ -45,25 +30,29 @@ class BasicClient(object):
         Returns: A generator of etalons
 
         """
-        for method, each_entry in self.server_spec.paths_and_methods():
-            yield self.snapshot(each_entry, method)
+        for entryid, method, each_entry, payload in self.server_spec.paths():
+            yield self.snapshot(entry=each_entry,
+                                method=method,
+                                name=self.server_spec.make_name(entryid),
+                                requests_kw=dict(json=payload))
 
-    def snapshot(self, entry: str, method: str,
+    def snapshot(self, entry: str, method: str, name: str,
+                 requests_kw=None,
                  Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
         """Makes etalon, a "snapshot" of response from the server
         to request on the :entry: with the HTTP :method:
 
         Args:
           entry: str: part of the url that describes an API entry
-          method: str: HTTP method: GET - supported, TODO: POST, PUT...
+          method: str: HTTP method: GET, POST, PUT...
           Etalon: Constructor (Default is BasicHTTPResponseEtalon)
 
         Returns:
 
         """
-        url = urllib.parse.urljoin(self._server_url, entry)
+        url = urllib.parse.urljoin(self.server_spec.url, entry)
         try:
-            response = requests.request(method, url)
+            response = requests.request(method=method, url=url, **requests_kw)
         except requests.exceptions.ConnectionError:
             raise ConnectionError(url)
-        return Etalon(entry=entry, response=response)
+        return Etalon(entry=entry, name=name, response=response)
