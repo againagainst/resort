@@ -1,9 +1,5 @@
 '''
-Available options:
-config - path to the config json file (cli argument only)
-project - path to the project directory
-server.url - address of a test server
-server.spec - definition of a test server
+python resort/app.py -h
 '''
 import argparse
 import os
