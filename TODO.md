@@ -12,10 +12,10 @@
 - [x] CLI storing (`$ resort --store`)
 - [x] CLI checking (`$ resort --check`)
 - [x] Boilerplate generation (`$ resort --create [prj-name]`)
-- [ ] Test generation (`$ resort generate [--unittest]`)
 - [ ] Application interface in python (`import resort`)
 - [ ] Require -f with the `store` if etalons directory is not empty
-- [ ] REMOVED: -- An ability to update etalons (`--update` options to generate diff)
+- [ ] Test generation (`$ resort generate [--unittest]`)
+- [x] REMOVED: -- An ability to update etalons (`--update` options to generate diff)
 
 
 ### Features to do:
