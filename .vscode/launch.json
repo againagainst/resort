@@ -19,7 +19,10 @@
             "args": [
                 "--project=${workspaceFolder}/projects/basic-rest-test",
                 "store"
-            ]
+            ],
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
         },
         {
             "name": "resort check",
@@ -29,7 +32,10 @@
             "args": [
                 "--project=${workspaceFolder}/projects/basic-rest-test",
                 "check"
-            ]
+            ],
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
         },
         {
             "name": "resort create",
@@ -39,7 +45,10 @@
             "args": [
                 "--project=${workspaceFolder}/projects/basic-rest-test",
                 "create"
-            ]
+            ],
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
         },
         {
             "name": "Debug Basic REST server",
