@@ -51,6 +51,15 @@
             }
         },
         {
+            "name": "resort get sys info",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/resort/sysinfo.py",
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
+        },
+        {
             "name": "Debug Basic REST server",
             "type": "python",
             "request": "launch",
