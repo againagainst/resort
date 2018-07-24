@@ -51,10 +51,19 @@
             }
         },
         {
+            "name": "resort unittest",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/resort/test/test_import_system.py",
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
+        },
+        {
             "name": "resort get sys info",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/resort/sysinfo.py",
+            "program": "${workspaceFolder}/resort/test/sysinfo.py",
             "env": {
                 "PYTHONPATH":"${workspaceFolder}"
             }
