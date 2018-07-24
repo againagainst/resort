@@ -3,9 +3,9 @@ import pathlib
 
 import daiquiri
 
-import constants
-import options
-from errors import BadProjectPath, BadArgument
+from resort import constants
+from resort import options
+from .errors import BadProjectPath, BadArgument
 
 LOG = daiquiri.getLogger(__name__)
 

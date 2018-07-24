@@ -1,6 +1,6 @@
 import dictdiffer
 
-from etalons.base import BaseEtalon
+from .base import BaseEtalon
 
 
 class BaseComparator(object):

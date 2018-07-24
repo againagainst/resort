@@ -3,9 +3,9 @@ import copy
 
 import daiquiri
 
-from project import ResortProject
-from etalons import BaseEtalon
-from errors import EtalonPathError
+from .base import BaseEtalon
+from ..project import ResortProject
+from ..errors import EtalonPathError
 
 LOG = daiquiri.getLogger(__name__)
 

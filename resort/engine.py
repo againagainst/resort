@@ -1,9 +1,9 @@
 import daiquiri
 
-import etalons
-from client import BasicClient
-from server_spec import ServerSpecReader
-from project import ResortProject
+from resort import etalons
+from .client import BasicClient
+from .server_spec import ServerSpecReader
+from .project import ResortProject
 
 LOG = daiquiri.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 import requests
 
-from etalons.base import BaseEtalon
+from .base import BaseEtalon
 
 
 class BasicHTTPResponseEtalon(BaseEtalon):
