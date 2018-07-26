@@ -60,6 +60,15 @@
             }
         },
         {
+            "name": "resort api example",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/api-unittest/test_all.py",
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
+        },
+        {
             "name": "resort get sys info",
             "type": "python",
             "request": "launch",

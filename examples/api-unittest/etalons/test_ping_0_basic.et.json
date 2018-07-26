@@ -1,0 +1,10 @@
+{
+  "body": "pong",
+  "headers": {
+    "Content-Length": "4",
+    "Date": "Thu, 26 Jul 2018 08:18:33 GMT",
+    "Content-Type": "text/html; charset=UTF-8",
+    "Server": "TornadoServer/5.0.2",
+    "Etag": "\"0e514a0662bcb69dc863953d1ce26e3d40e81a87\""
+  }
+}
