@@ -21,6 +21,7 @@ class ResortEngine:
 
     @staticmethod
     def check(project: ResortProject):
+        binnary_result = True
         for each_test in project.test_specs:
             LOG.info('Cheking: ' + str(each_test))
             client = BasicClient(ServerSpecReader.prepare(spec_file=each_test))
@@ -28,10 +29,12 @@ class ResortEngine:
             eio = EtalonIO(project=project)
             for snapshot in client.snapshot_etalons():
                 etalon = eio.restore(snapshot)
-                result = differ.check(etalon, snapshot)
+                result, res_code = differ.check(etalon, snapshot)
+                binnary_result = binnary_result and res_code
                 print('{0} | {1}:'.format(etalon.file_name, etalon.entry))
                 assert etalon.entry == snapshot.entry
                 print(result)
+        return binnary_result
 
     @staticmethod
     def command(args, project: ResortProject):

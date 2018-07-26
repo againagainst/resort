@@ -16,7 +16,7 @@ class TestBasicRESTServer(unittest.TestCase):
 
         rp = ResortProject(project_dir)
         self.assertIsNotNone(rp)
-        ResortEngine.check(rp)
+        self.assertTrue(ResortEngine.check(rp))
 
 
 if __name__ == '__main__':
