@@ -25,8 +25,7 @@ class ResortApp:
             if args.mode.lower() == constants.ResortMode.CREATE:
                 ResortProject.create(args.project, make_config=True)
             else:
-                project = ResortProject.read(
-                    args.project, opts=options.read_all())
+                project = ResortProject.read(args.project)
                 ResortEngine.command(args, project)
         except ResortBaseException as exc:
             LOG.warning(exc)

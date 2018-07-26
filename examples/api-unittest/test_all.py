@@ -14,9 +14,10 @@ class TestBasicRESTServer(unittest.TestCase):
         project_dir = curfile.parent
         self.assertTrue(project_dir.is_dir())
 
-        rp = ResortProject(project_dir)
+        rp = ResortProject.read(project_dir)
         self.assertIsNotNone(rp)
-        self.assertTrue(ResortEngine.check(rp))
+        isok = ResortEngine.check(rp)
+        self.assertTrue(isok, 'There are differences in the response')
 
 
 if __name__ == '__main__':

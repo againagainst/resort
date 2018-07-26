@@ -70,7 +70,7 @@ class ResortProject(object):
         return cls(project_dir)
 
     @classmethod
-    def read(cls, project_dir: pathlib.Path, opts: dict):
+    def read(cls, project_dir: pathlib.Path):
         """Reads projects configuration (config) and reolves test files (specs).
 
         Args:
