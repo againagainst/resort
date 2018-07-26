@@ -27,6 +27,7 @@
 - [x] Support names for tests' etalons (test_*.json['info']['title'])
 - [ ] Support situation when test files were changed after teh store action. (warning on check)
 - [ ] Make `etalon-id` structure that combines `entry: str` and `name: str`
+- [ ] Control exports with `__all__` field in every module/package
 
 ### Project organization tasks
 - [ ] Add tests and use TDD
