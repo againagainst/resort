@@ -1,11 +1,8 @@
-from resort.test import sysinfo # noqa
-
 import logging
 
 import daiquiri
 
-from resort import constants
-from resort.options import read_args, read_all
+from resort import constants, options
 from resort.engine import ResortEngine
 from resort.project import ResortProject
 from resort.errors import ResortBaseException
@@ -24,12 +21,12 @@ class ResortApp:
         Reads cli argumnets, calls engine's command, loggs errors.
         """
         try:
-            args = read_args()
+            args = options.read_args()
             if args.mode.lower() == constants.ResortMode.CREATE:
                 ResortProject.create(args.project, make_config=True)
             else:
                 project = ResortProject.read(
-                    args.project, opts=read_all())
+                    args.project, opts=options.read_all())
                 ResortEngine.command(args, project)
         except ResortBaseException as exc:
             LOG.warning(exc)
