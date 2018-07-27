@@ -32,8 +32,8 @@ class EtalonIO:
         Args:
           etalon: BaseEtalon
         """
-        etadir = self.project_dir.joinpath(etalon.dir)
-        etapath = self.project_dir.joinpath(etalon.path)
+        etadir = self.project.etalons_dir
+        etapath = etadir.joinpath(etalon.path)
 
         etadir.mkdir(parents=True, exist_ok=True)
         with etapath.open(mode='w') as f:

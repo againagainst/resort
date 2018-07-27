@@ -4,6 +4,7 @@ from .etalons import EtalonIO, BaseComparator
 from .client import BasicClient
 from .server_spec import ServerSpecReader
 from .project import ResortProject
+from .errors import EtalonDirIsNotEmprty
 
 LOG = daiquiri.getLogger(__name__)
 
@@ -11,7 +12,10 @@ LOG = daiquiri.getLogger(__name__)
 class ResortEngine:
 
     @staticmethod
-    def store(project: ResortProject):
+    def store(project: ResortProject, update_existing=False):
+        if not update_existing and project.has_etalons:
+            raise EtalonDirIsNotEmprty()
+
         for each_test in project.test_specs:
             LOG.info('Storing: ' + str(each_test))
             client = BasicClient(ServerSpecReader.prepare(spec_file=each_test))
