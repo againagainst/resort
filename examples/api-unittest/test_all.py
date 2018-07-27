@@ -8,12 +8,7 @@ from resort.project import ResortProject
 class TestBasicRESTServer(unittest.TestCase):
 
     def test_resort_all(self):
-        curfile = pathlib.Path(__file__)
-        self.assertTrue(curfile.is_file())
-
-        project_dir = curfile.parent
-        self.assertTrue(project_dir.is_dir())
-
+        project_dir = pathlib.Path(__file__).parent
         rp = ResortProject.read(project_dir)
         self.assertIsNotNone(rp)
         check_result = ResortEngine.check(rp)
