@@ -12,7 +12,7 @@
 - [x] CLI storing (`$ resort --store`)
 - [x] CLI checking (`$ resort --check`)
 - [x] Boilerplate generation (`$ resort --create [prj-name]`)
-- [ ] Application interface in python (`import resort`)
+- [x] Application interface in python (`import resort`)
 - [ ] Require -f with the `store` if etalons directory is not empty
 - [ ] Test generation (`$ resort generate [--unittest]`)
 - [x] REMOVED: -- An ability to update etalons (`--update` options to generate diff)
@@ -25,7 +25,7 @@
 - [ ] Rename entity to URI (Uniform Resource Identifier)
 - [ ] Implement test system based on `tavern` format
 - [x] Support names for tests' etalons (test_*.json['info']['title'])
-- [ ] Support situation when test files were changed after teh store action. (warning on check)
+- [ ] Support situation when test files were changed after the `store` action. (warning on check)
 - [ ] Make `etalon-id` structure that combines `entry: str` and `name: str`
 - [ ] Control exports with `__all__` field in every module/package
 
@@ -34,7 +34,7 @@
 - [x] Docstring all classes and methods
 - [x] Setup logging (daiquiri)
 - [x] Create the app
-- [ ] Add versioning for the frameworks and track version of the server
+- [ ] Add versioning for the framework and track version of the server
 - [x] Add error (exception) handling 
 - [ ] Write exhaustive help system (`--help`)
 - [x] Replace arguments with commands (`--store`->`store`)
