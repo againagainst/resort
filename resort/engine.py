@@ -20,7 +20,7 @@ class ResortEngine:
                 eio.save(etalon)
 
     @staticmethod
-    def check(project: ResortProject):
+    def check(project: ResortProject, cli=True):
         check_hash = dict(changes=0)
         for each_test in project.test_specs:
             LOG.info('Cheking: ' + str(each_test))
@@ -31,11 +31,12 @@ class ResortEngine:
                 etalon = eio.restore(snapshot)
                 result = differ.check(etalon, snapshot)
                 check_hash['changes'] += result['changes']
-                check_hash[(etalon.file_name, etalon.entry)] = result
-                print('{0} | {1}:'.format(etalon.file_name, etalon.entry))
                 assert etalon.entry == snapshot.entry
-                print(result['difftext'])
-        return BaseComparator.bin_result(check_hash)
+                check_hash[(etalon.file_name, etalon.entry)] = result
+                if cli:
+                    print('{0} | {1}:'.format(etalon.file_name, etalon.entry))
+                    print(result['difftext'])
+        return check_hash
 
     @staticmethod
     def command(args, project: ResortProject):

@@ -16,8 +16,9 @@ class TestBasicRESTServer(unittest.TestCase):
 
         rp = ResortProject.read(project_dir)
         self.assertIsNotNone(rp)
-        isok = ResortEngine.check(rp)
-        self.assertTrue(isok, 'There are differences in the response')
+        check_result = ResortEngine.check(rp)
+        self.assertEqual(check_result['changes'], 0,
+                         'There are differences in the response')
 
 
 if __name__ == '__main__':
