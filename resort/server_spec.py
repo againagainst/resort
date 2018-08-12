@@ -8,6 +8,7 @@ class ServerSpecReader(object):
     Args:
         spec_file (pathlib.Path): a full path to a spec file
     """
+    __supported_auth_methods = ('post-request')
 
     def __init__(self):
         self._file = None
@@ -30,8 +31,9 @@ class ServerSpecReader(object):
             body = json.load(fp)
             reader._paths = reader.ensure_payload(body['paths'])
             reader.url = body['server']['url']
+            reader.session = reader.get_session(body)
             info_title = body["info"].get("title", None)
-            reader.test_name = info_title or reader._file.stem 
+            reader.test_name = info_title or reader._file.stem
             reader.version = body['info']['version']
             reader.vprefix = pathlib.Path('v' + reader.version)
         return reader
@@ -59,3 +61,16 @@ class ServerSpecReader(object):
 
     def make_name(self, entryid):
         return "{0}_{1}".format(self.test_name, entryid)
+
+    @classmethod
+    def get_session(cls, body: dict):
+        try:
+            session_desc = body['server']['session']
+        except KeyError:
+            return None
+
+        auth_method = session_desc.get('type', 'post-request')
+        if auth_method not in ServerSpecReader.__supported_auth_methods:
+            raise NotImplementedError
+
+        return session_desc
