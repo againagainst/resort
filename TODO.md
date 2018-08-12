@@ -16,6 +16,7 @@
 - [ ] Require -f with the `store` if etalons directory is not empty
 - [ ] Test generation (`$ resort generate [--unittest]`)
 - [x] REMOVED: -- An ability to update etalons (`--update` options to generate diff)
+- [ ] Support authentication and sessions
 
 
 ### Features to do:
