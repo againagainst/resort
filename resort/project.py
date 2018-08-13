@@ -3,9 +3,8 @@ import pathlib
 
 import daiquiri
 
-import constants
-import options
-from errors import BadProjectPath, BadArgument
+from . import constants, options
+from .errors import BadProjectPath, BadArgument
 
 LOG = daiquiri.getLogger(__name__)
 
@@ -71,7 +70,7 @@ class ResortProject(object):
         return cls(project_dir)
 
     @classmethod
-    def read(cls, project_dir: pathlib.Path, opts: dict):
+    def read(cls, project_dir: pathlib.Path):
         """Reads projects configuration (config) and reolves test files (specs).
 
         Args:
