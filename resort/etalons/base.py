@@ -43,19 +43,6 @@ class BaseEtalon(object):
         return "{0}.et.{1}".format(self._name, self._ext)
 
     @property
-    def dir(self):
-        """
-        [up to eio/client][to be returned][up to self.file_name]:
-        /path/project_dir/ etalons/        test_name_etalon.fmt
-
-        Returns:
-            [pathlib.Path]: directory for etalons, relative to the project_dir
-        """
-        # flatten etalon files
-        # .joinpath(pathlib.Path(self._entry))
-        return pathlib.Path('etalons')
-
-    @property
     def path(self):
         """
         [up to eio/client][dir+file_name, to be returned]:

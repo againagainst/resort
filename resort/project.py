@@ -1,3 +1,4 @@
+import os
 import json
 import pathlib
 
@@ -22,6 +23,7 @@ class ResortProject(object):
                  name: str=None, test_specs: tuple=None, config: dict=None):
         # pkey, id
         self.project_dir = project_dir
+        self._etalons_dir = project_dir.joinpath(pathlib.Path('etalons'))
         # optional
         self.name = name or project_dir.stem
         self.test_specs = test_specs or tuple()
@@ -102,6 +104,17 @@ class ResortProject(object):
         if make_dir:
             self.project_dir.mkdir(parents=True, exist_ok=True)
         return self.project_dir
+
+    def has_etalons(self):
+        return len(os.listdir(str(self.etalons_dir))) > 0
+
+    @property
+    def etalons_dir(self):
+        """
+        Returns:
+            [pathlib.Path]: directory for etalons, relative to the project_dir
+        """
+        return self._etalons_dir
 
     __default_config = {
         'exclude': []
