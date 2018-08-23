@@ -33,7 +33,7 @@ class EtalonIO:
           etalon: BaseEtalon
         """
         etadir = self.project.etalons_dir
-        etapath = etadir.joinpath(etalon.path)
+        etapath = etadir.joinpath(etalon.file_name)
 
         etadir.mkdir(parents=True, exist_ok=True)
         with etapath.open(mode='w') as f:
@@ -51,12 +51,12 @@ class EtalonIO:
             BaseEtalon: etalon object
         """
         etalon = copy.deepcopy(snapshot)
-        etapath = self.project_dir.joinpath(etalon.path)
+        etapath = self.project.etalons_dir.joinpath(etalon.file_name)
 
         try:
             with etapath.open(mode='r') as f:
                 LOG.info("Reading from {0}".format(etapath))
                 etalon.restore_from_dict(json.load(f))
         except FileNotFoundError:
-            raise EtalonPathError(etalon.path)
+            raise EtalonPathError(etapath)
         return etalon

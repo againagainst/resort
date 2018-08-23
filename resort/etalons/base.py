@@ -1,5 +1,4 @@
 import re
-import pathlib
 
 
 class BaseEtalon(object):
@@ -40,18 +39,7 @@ class BaseEtalon(object):
         Returns:
             [str]: name of the etalon file: test_title+.extension
         """
-        return "{0}.et.{1}".format(self._name, self._ext)
-
-    @property
-    def path(self):
-        """
-        [up to eio/client][dir+file_name, to be returned]:
-        /path/project_dir/ etalons/test_name_etalon.fmt
-
-        Returns:
-            [pathlib.Path]: path to the etalon, relative to the project_dir
-        """
-        return self.dir.joinpath(self.file_name)
+        return "{0}.et.{1}".format(self.name, self.ext)
 
     @staticmethod
     def encode_filepath(url: str):
