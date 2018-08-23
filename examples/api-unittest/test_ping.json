@@ -1,7 +1,7 @@
 {
   "requests": [
     [
-      "/ping",  "get"
+      "/ping",  {"method": "GET"}
     ]
   ],
   "info": {
@@ -9,6 +9,6 @@
     "version": "1.0.0"
   },
   "server": {
-    "url": "http://127.0.0.1:8888"
+    "host": "http://127.0.0.1:8888"
   }
 }

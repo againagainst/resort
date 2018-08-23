@@ -1,10 +1,10 @@
 {
   "requests": [
     [
-      "/echo", "post", {"body":"json"}
+      "/echo", {"method": "POST", "body":"json"}
     ],
     [
-      "/echo", "post", ["some","body","has","told","me"]
+      "/echo", {"method": "POST", "body":["some","body","has","told","me"]}
     ]
   ],
   "info": {
@@ -12,6 +12,6 @@
     "version": "1.0.0"
   },
   "server": {
-    "url": "http://127.0.0.1:8888"
+    "host": "http://127.0.0.1:8888"
   }
 }

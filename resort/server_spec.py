@@ -30,7 +30,7 @@ class ServerSpecReader(object):
         with reader._file.open() as fp:
             body = json.load(fp)
             reader.requests = body['requests']
-            reader.url = body['server']['url']
+            reader.host = body['server']['host']
             reader.session = reader.get_session(body)
             info_title = body["info"].get("title", None)
             reader.test_name = info_title or reader._file.stem

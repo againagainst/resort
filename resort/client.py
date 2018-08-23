@@ -50,10 +50,10 @@ class BasicClient(object):
         Returns: BasicHTTPResponseEtalon
 
         """
-        url = urllib.parse.urljoin(self.server_spec.url, uri)
-        params['url'] = url
+        url = urllib.parse.urljoin(self.server_spec.host, uri)
+        method = self.pop_method(params)
         try:
-            response = self.session.request(**params)
+            response = self.session.request(method=method, url=url, **params)
         except requests.exceptions.ConnectionError:
             raise ConnectionError(url)
         return self.Etalon(entry=uri, name=name, response=response)
@@ -62,9 +62,10 @@ class BasicClient(object):
         session_type = session_desc.get('type', None)
         if session_type == 'post-request':
             session = requests.Session()
-            resource, method, payload = session_desc['create']
-            url = urllib.parse.urljoin(self.server_spec.url, resource)
-            session.request(method=method, url=url, json=payload)
+            uri, params = session_desc['create']
+            url = urllib.parse.urljoin(self.server_spec.host, uri)
+            method = self.pop_method(params)
+            session.request(method=method, url=url, **params)
         else:
             session = requests
         return session, session_type
@@ -72,3 +73,7 @@ class BasicClient(object):
     def disconnect(self):
         if self.session_type == 'post-request':
             self.session.close()
+
+    @classmethod
+    def pop_method(cls, params: dict):
+        return params.pop('method', 'GET')
