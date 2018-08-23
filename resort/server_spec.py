@@ -12,7 +12,7 @@ class ServerSpecReader(object):
 
     def __init__(self):
         self._file = None
-        self._paths = None
+        self.requests = None
         self.version = None
         self.vprefix = None
 
@@ -29,7 +29,7 @@ class ServerSpecReader(object):
 
         with reader._file.open() as fp:
             body = json.load(fp)
-            reader._paths = reader.ensure_payload(body['paths'])
+            reader.requests = body['requests']
             reader.url = body['server']['url']
             reader.session = reader.get_session(body)
             info_title = body["info"].get("title", None)
@@ -38,26 +38,14 @@ class ServerSpecReader(object):
             reader.vprefix = pathlib.Path('v' + reader.version)
         return reader
 
-    def ensure_payload(self, paths: list):
-        """Converts
-        [["/index.html", "get"], ["/api/user", "post", {...}]]
-        to
-        [["/index.html", "get", None], ["/api/user", "post", {...}]]
-        So it's easier to unpack them.
-
-        Args:
-            paths (list): [list of test entries]
-        """
-        return list(entry if len(entry) == 3 else entry + [None] for entry in paths)
-
-    def paths(self):
+    def fetch_signatures(self):
         """Yields method, path, payload for each entry in the spec.
 
         Returns:
           a generator of method, path: tuple
         """
-        for entry_id, (entry, method, payload) in enumerate(self._paths):
-            yield entry_id, method, entry, payload
+        for entry_id, (uri, params) in enumerate(self.requests):
+            yield entry_id, uri, params
 
     def make_name(self, entry_id):
         return "{0}_{1}".format(self.test_name, entry_id)
