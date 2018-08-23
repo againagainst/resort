@@ -106,7 +106,7 @@ class ResortProject(object):
         return self.project_dir
 
     def has_etalons(self):
-        return len(os.listdir(str(self.etalons_dir))) > 0
+        return self.etalons_dir.exists() and len(os.listdir(str(self.etalons_dir))) > 0
 
     @property
     def etalons_dir(self):

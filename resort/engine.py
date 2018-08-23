@@ -13,7 +13,7 @@ class ResortEngine:
 
     @staticmethod
     def store(project: ResortProject, update_existing=False):
-        if not update_existing and project.has_etalons:
+        if not update_existing and project.has_etalons():
             raise EtalonDirIsNotEmprty()
 
         for each_test in project.test_specs:
