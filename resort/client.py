@@ -31,10 +31,10 @@ class BasicClient(object):
         Returns: A generator of etalons
 
         """
-        for entryid, method, each_entry, payload in self.server_spec.paths():
+        for entry_id, method, each_entry, payload in self.server_spec.paths():
             yield self.snapshot(entry=each_entry,
                                 method=method,
-                                name=self.server_spec.make_name(entryid),
+                                name=self.server_spec.make_name(entry_id),
                                 requests_kw=dict(json=payload))
 
     def snapshot(self, entry: str, method: str, name: str,

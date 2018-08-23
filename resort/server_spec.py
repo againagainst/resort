@@ -56,11 +56,11 @@ class ServerSpecReader(object):
         Returns:
           a generator of method, path: tuple
         """
-        for entryid, (entry, method, payload) in enumerate(self._paths):
-            yield entryid, method, entry, payload
+        for entry_id, (entry, method, payload) in enumerate(self._paths):
+            yield entry_id, method, entry, payload
 
-    def make_name(self, entryid):
-        return "{0}_{1}".format(self.test_name, entryid)
+    def make_name(self, entry_id):
+        return "{0}_{1}".format(self.test_name, entry_id)
 
     @classmethod
     def get_session(cls, body: dict):
