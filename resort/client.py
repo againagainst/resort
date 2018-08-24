@@ -4,9 +4,9 @@ from typing import Type
 
 import requests
 
+import errors
 from .etalons import BaseEtalon, BasicHTTPResponseEtalon
 from .server_spec import ServerSpecReader
-from .errors import ConnectionError
 
 
 class BasicClient(object):
@@ -56,7 +56,9 @@ class BasicClient(object):
             with self.make_session() as session:
                 response = session.request(method=method, url=url, **params)
         except requests.exceptions.ConnectionError:
-            raise ConnectionError(url)
+            raise errors.ConnectionError(url)
+        except TypeError as err:
+            raise errors.SpecFormatError(fname=name, err=err)
         return self.Etalon(entry=uri, name=name, response=response)
 
     @contextlib.contextmanager

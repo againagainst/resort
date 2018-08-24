@@ -67,10 +67,10 @@ class EtalonDirIsNotEmpty(ResortBaseException):
         super().__init__('Directory with etalons is not empty. Use -f to rewrite files')
 
 
-class TestSpecFormatError(ResortBaseException):
+class SpecFormatError(ResortBaseException):
     """Test specification has invalid format or
     missing some elements which are required.
     """
-    def __init__(self, fname, err, reason):
+    def __init__(self, fname, err, reason=''):
         super().__init__('Test {fname} has invalid format: '
                          '{err} {reason}'.format(fname=fname, err=err, reason=reason))

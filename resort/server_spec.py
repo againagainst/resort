@@ -39,10 +39,9 @@ class ServerSpecReader(object):
                 reader.version = body['info']['version']
                 reader.vprefix = pathlib.Path('v' + reader.version)
             except KeyError as err:
-                raise errors.TestSpecFormatError(fname=reader._file,
-                                                 err=err,
-                                                 reason='section is required')
-                
+                raise errors.SpecFormatError(fname=reader._file,
+                                             err=err,
+                                             reason='section is required')
         return reader
 
     def fetch_signatures(self):
