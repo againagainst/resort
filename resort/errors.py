@@ -59,10 +59,9 @@ class EtalonPathError(ResortBaseException):
         super().__init__('Etalon for "%s" is not found' % entry)
 
 
-class EtalonDirIsNotEmprty(ResortBaseException):
+class EtalonDirIsNotEmpty(ResortBaseException):
     """Directory with project's etalons is not empty.
     """
 
     def __init__(self):
         super().__init__('Directory with etalons is not empty. Use -f to rewrite files')
-
