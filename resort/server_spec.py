@@ -1,5 +1,6 @@
 import json
 import pathlib
+import errors
 
 
 class ServerSpecReader(object):
@@ -28,14 +29,20 @@ class ServerSpecReader(object):
         reader._file = spec_file
 
         with reader._file.open() as fp:
-            body = json.load(fp)
-            reader.requests = ServerSpecReader.ensure_params(body['requests'])
-            reader.host = body['server']['host']
-            reader.session = ServerSpecReader.parse_session(body)
-            info_title = body["info"].get("title", None)
-            reader.test_name = info_title or reader._file.stem
-            reader.version = body['info']['version']
-            reader.vprefix = pathlib.Path('v' + reader.version)
+            try:
+                body = json.load(fp)
+                reader.requests = ServerSpecReader.ensure_params(body['requests'])
+                reader.host = body['server']['host']
+                reader.session = ServerSpecReader.parse_session(body)
+                info_title = body["info"].get("title", None)
+                reader.test_name = info_title or reader._file.stem
+                reader.version = body['info']['version']
+                reader.vprefix = pathlib.Path('v' + reader.version)
+            except KeyError as err:
+                raise errors.TestSpecFormatError(fname=reader._file,
+                                                 err=err,
+                                                 reason='section is required')
+                
         return reader
 
     def fetch_signatures(self):
