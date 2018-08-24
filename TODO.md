@@ -20,10 +20,10 @@
 - [x] Support authentication and sessions
 
 ### Features to do:
-- [ ] Handle "Connection refused" error
+- [x] Handle "Connection refused" error
 - [ ] Handle pretty-printing of the snapshot-etalon difference
 - [ ] Support ResortProject.ignore through config
-- [ ] Rename entity to URI (Uniform Resource Identifier)
+- [x] Rename `entry` to `uri` (Uniform Resource Identifier) in the client
 - [ ] Support situation when test files were changed after the `store` action. (warning on check)
 - [ ] MIME Type based etalon
 - [ ] Implement test system based on `tavern` format

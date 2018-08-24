@@ -9,7 +9,7 @@ class BaseEtalon(object):
         entry in the spec and it's path in the snapshots directory
 
         Args:
-            entry (str): Entry path
+            entry (str): Entry path (actually an URI)
             name [str, 'etalon']: File Name
             ext [str, 'txt']: File extension
         """
@@ -19,26 +19,22 @@ class BaseEtalon(object):
 
     @property
     def entry(self):
+        """unified name of a resource (uri) which the snapshot represents"""
         return self._entry
 
     @property
     def name(self):
+        """name of the snapshot, like test_name_N_etalontype"""
         return self._name
 
     @property
     def ext(self):
-        """File extension, defaults to .txt"""
+        """extension of the snapshot, defaults to .txt"""
         return self._ext
 
     @property
     def file_name(self):
-        """
-        [up to eio/client][up to self.dir][to be returned]:
-        /path/project_dir/ etalons/        test_name_etalon.fmt
-
-        Returns:
-            [str]: name of the etalon file: test_title+.extension
-        """
+        """actual name of the snapshot file"""
         return "{0}.et.{1}".format(self.name, self.ext)
 
     @staticmethod
