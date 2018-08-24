@@ -3,7 +3,7 @@
     ["/ping", {"method": "GET"}]
   ],
   "server": {
-    "host": "http://127.0.0.1:8888"
+    "host": "http://127.0.0.1:8888",
     "session": {
       "type": "post-request",
       "create": ["/session", {"method": "POST", 
