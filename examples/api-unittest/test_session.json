@@ -4,12 +4,12 @@
   ],
   "server": {
     "host": "http://127.0.0.1:8888"
-  },
-  "session": {
-    "type": "post-request",
-    "create": ["/session", {"method": "POST", 
-                            "json": {"test": "payload"}}],
-    "delete": ["/session", {"method": "DELETE"}]
+    "session": {
+      "type": "post-request",
+      "create": ["/session", {"method": "POST", 
+                              "json": {"test": "payload"}}],
+      "delete": ["/session", {"method": "DELETE"}]
+    }
   },
   "info": {
     "title": "session-test",
