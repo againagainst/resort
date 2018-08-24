@@ -22,7 +22,6 @@ class ResortEngine:
             eio = EtalonIO(project=project, make_dir=True)
             for etalon in client.snapshot_etalons():
                 eio.save(etalon)
-            client.disconnect()
 
     @staticmethod
     def check(project: ResortProject, cli=True):

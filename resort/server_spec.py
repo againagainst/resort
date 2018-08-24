@@ -29,9 +29,9 @@ class ServerSpecReader(object):
 
         with reader._file.open() as fp:
             body = json.load(fp)
-            reader.requests = body['requests']
+            reader.requests = ServerSpecReader.ensure_params(body['requests'])
             reader.host = body['server']['host']
-            reader.session = reader.get_session(body)
+            reader.session = ServerSpecReader.parse_session(body)
             info_title = body["info"].get("title", None)
             reader.test_name = info_title or reader._file.stem
             reader.version = body['info']['version']
@@ -44,21 +44,30 @@ class ServerSpecReader(object):
         Returns:
           a generator of method, path: tuple
         """
+
         for entry_id, (uri, params) in enumerate(self.requests):
             yield entry_id, uri, params
 
     def make_name(self, entry_id):
         return "{0}_{1}".format(self.test_name, entry_id)
 
+    @property
+    def has_session(self):
+        return self.session is not None
+
+    @property
+    def session_type(self):
+        return self.session['type'] if self.has_session else None
+
     @classmethod
-    def get_session(cls, body: dict):
+    def parse_session(cls, body: dict):
         try:
             session_desc = body['server']['session']
         except KeyError:
             return None
 
-        auth_method = session_desc.get('type', 'post-request')
-        if auth_method not in ServerSpecReader.__supported_auth_methods:
-            raise NotImplementedError
-
         return session_desc
+
+    @classmethod
+    def ensure_params(cls, request_signatures):
+        return [(x[0], x[1]) if len(x) > 1 else (x[0], dict()) for x in request_signatures]
