@@ -1,9 +1,0 @@
-{
-  "body": "[\"some\", \"body\", \"has\", \"told\", \"me\"]",
-  "headers": {
-    "Date": "Thu, 26 Jul 2018 08:18:33 GMT",
-    "Content-Type": "text/html; charset=UTF-8",
-    "Server": "TornadoServer/5.0.2",
-    "Content-Length": "37"
-  }
-}
