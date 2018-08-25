@@ -29,23 +29,24 @@
 					<p>Helps you get better REST</p>
 				</section>
 				<section>
-					<h2>Generate the boilerplate</h2>
+					<h3>the boilerplate</h3>
 					<pre>
-						<code class="hljs bash">
-$ python resort/app.py --create --project=basic-rest-test
+<code class="hljs bash">$ python resort/app.py create basic-rest-test
 $ cd basic-rest-test
+
 basic-rest-test/
-	test_first.json
-	config.json
-						</code>
+  test_first.json
+  config.json
+</code>
 					</pre>
 				</section>
 				<section>
-					<h2>Configure a test</h2>
+					<h3>a test</h3>
 					<pre>
-						<code class="hljs js">
+<code class="hljs js">{
   "requests": [
-	"/ping", {"method": "GET"}]
+	["/api/foo"],
+	["/api/bar", {"method": "POST", "json": [...]}],
   ],
   "server": {
 	"host": "http://127.0.0.1:8888",
@@ -54,17 +55,55 @@ basic-rest-test/
 	  "create": ["/session", {"method": "POST", 
                               "json": {"test": "payload"}}],
 	  "delete": ["/session", {"method": "DELETE"}]
-	}
-  }
-						</code>
+}}}
+</code>
 					</pre>
 				</section>
+				<section>
+						<h3>the etalon</h3>
+						<pre>
+<code class="hljs bash">$ python resort/app.py store
+
+basic-rest-test/
+  etalons/
+    test_first_0_basic.et.json
+    test_first_1_basic.et.json
+  test_first.json
+</code>
+						</pre>
+					</section>
+				    <section>
+						<h3>the diff</h3>
+						<pre>
+<code class="hljs bash"># introduce some changes to the server
+$ python resort/app.py check
+</code>
+						</pre>
+					</section>
+					<section>
+							<h3>python API</h3>
+							<pre>
+	<code class="hljs python">import unittest
+from resort.engine import ResortEngine
+from resort.project import ResortProject
+
+class TestBasicRESTServer(unittest.TestCase):
+
+  def test_resort_all(self):
+	  project_dir = pathlib.Path(__file__).parent
+	  rp = ResortProject.read(project_dir)
+	  self.assertIsNotNone(rp)
+	  check_result = ResortEngine.check(rp)
+	  self.assertEqual(check_result['changes'], 0)
+	</code>
+							</pre>
+					</section>
 				<section>
 					<h2>Contacts</h2>
 					<ul>
 						<li>github.com/againagainst/resort</li>
 						<li>@againagainst</li>
-						<li>againa.againsts@gmail.com</li>
+						<li>again.againsts@gmail.com</li>
 					</ul>
 				</section>
 			</div>
