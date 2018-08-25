@@ -2,11 +2,10 @@ import logging
 
 import daiquiri
 
-import constants
-import options
-from engine import ResortEngine
-from project import ResortProject
-from errors import ResortBaseException
+from resort import constants, options
+from resort.engine import ResortEngine
+from resort.project import ResortProject
+from resort.errors import ResortBaseException
 
 # setup logging
 daiquiri.setup(program_name=constants.APP_NAME,
@@ -26,7 +25,7 @@ class ResortApp:
             if args.mode.lower() == constants.ResortMode.CREATE:
                 ResortProject.create(args.project, make_config=True)
             else:
-                project = ResortProject.read(args.project, opts=options.read_all())
+                project = ResortProject.read(args.project)
                 ResortEngine.command(args, project)
         except ResortBaseException as exc:
             LOG.warning(exc)

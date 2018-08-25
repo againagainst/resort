@@ -19,7 +19,10 @@
             "args": [
                 "--project=${workspaceFolder}/projects/basic-rest-test",
                 "store"
-            ]
+            ],
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
         },
         {
             "name": "resort check",
@@ -29,7 +32,10 @@
             "args": [
                 "--project=${workspaceFolder}/projects/basic-rest-test",
                 "check"
-            ]
+            ],
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
         },
         {
             "name": "resort create",
@@ -39,7 +45,37 @@
             "args": [
                 "--project=${workspaceFolder}/projects/basic-rest-test",
                 "create"
-            ]
+            ],
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
+        },
+        {
+            "name": "resort unittest",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/resort/test/test_import_system.py",
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
+        },
+        {
+            "name": "resort api example",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/api-unittest/test_all.py",
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
+        },
+        {
+            "name": "resort get sys info",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/resort/test/sysinfo.py",
+            "env": {
+                "PYTHONPATH":"${workspaceFolder}"
+            }
         },
         {
             "name": "Debug Basic REST server",

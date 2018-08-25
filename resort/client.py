@@ -3,9 +3,9 @@ from typing import Type
 
 import requests
 
-from etalons import BaseEtalon, BasicHTTPResponseEtalon
-from server_spec import ServerSpecReader
-from errors import ConnectionError
+from .etalons import BaseEtalon, BasicHTTPResponseEtalon
+from .server_spec import ServerSpecReader
+from .errors import ConnectionError
 
 
 class BasicClient(object):

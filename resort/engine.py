@@ -1,9 +1,9 @@
 import daiquiri
 
-import etalons
-from client import BasicClient
-from server_spec import ServerSpecReader
-from project import ResortProject
+from .etalons import EtalonIO, BaseComparator
+from .client import BasicClient
+from .server_spec import ServerSpecReader
+from .project import ResortProject
 
 LOG = daiquiri.getLogger(__name__)
 
@@ -15,23 +15,28 @@ class ResortEngine:
         for each_test in project.test_specs:
             LOG.info('Storing: ' + str(each_test))
             client = BasicClient(ServerSpecReader.prepare(spec_file=each_test))
-            eio = etalons.EtalonIO(project=project, make_dir=True)
+            eio = EtalonIO(project=project, make_dir=True)
             for etalon in client.snapshot_etalons():
                 eio.save(etalon)
 
     @staticmethod
-    def check(project: ResortProject):
+    def check(project: ResortProject, cli=True):
+        check_hash = dict(changes=0)
         for each_test in project.test_specs:
             LOG.info('Cheking: ' + str(each_test))
             client = BasicClient(ServerSpecReader.prepare(spec_file=each_test))
-            differ = etalons.BaseComparator(ignored=project.ignored)
-            eio = etalons.EtalonIO(project=project)
+            differ = BaseComparator(ignored=project.ignored)
+            eio = EtalonIO(project=project)
             for snapshot in client.snapshot_etalons():
                 etalon = eio.restore(snapshot)
                 result = differ.check(etalon, snapshot)
-                print('{0} | {1}:'.format(etalon.file_name, etalon.entry))
+                check_hash['changes'] += result['changes']
                 assert etalon.entry == snapshot.entry
-                print(result)
+                check_hash[(etalon.file_name, etalon.entry)] = result
+                if cli:
+                    print('{0} | {1}:'.format(etalon.file_name, etalon.entry))
+                    print(result['difftext'])
+        return check_hash
 
     @staticmethod
     def command(args, project: ResortProject):

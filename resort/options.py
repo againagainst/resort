@@ -6,9 +6,9 @@ import os
 import pathlib
 import json
 
-from engine import ResortEngine
-from errors import BadConfiguration
-from constants import APP_DESCRIPTION, CONFIG_FILE_NAME, ResortMode
+from .engine import ResortEngine
+from .errors import BadConfiguration
+from .constants import APP_DESCRIPTION, CONFIG_FILE_NAME, ResortMode
 
 
 def read_args():
