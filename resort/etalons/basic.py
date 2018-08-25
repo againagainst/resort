@@ -30,7 +30,10 @@ class BasicHTTPResponseEtalon(BaseEtalon):
                          **kwargs)
         if response is not None:
             self._headers = response.headers
+            self._headers.update(dict(status_code=response.status_code,
+                                      reason=response.reason))
             self._body = response.text
+            self._raw = response
 
     def restore_from_dict(self, etalon: dict):
         """Restores etalon object from the JSON-like object.

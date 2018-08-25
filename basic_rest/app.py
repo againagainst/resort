@@ -60,10 +60,28 @@ class EchoHander(tornado.web.RequestHandler):
         self.write(self.request.body)
 
 
+class AuthHander(tornado.web.RequestHandler):
+
+    def get(self):
+        tok = self.get_cookie('token')
+        if tok == 'authorized':
+            self.set_status(HTTPStatus.NO_CONTENT)
+        else:
+            self.set_status(HTTPStatus.UNAUTHORIZED)
+
+    def post(self):
+        self.set_cookie('token', 'authorized')
+
+    def delete(self):
+        self.clear_cookie('token')
+
+
 def serve_basic_rest_server():
     logging.basicConfig(level=logging.DEBUG)
     handlers = ((r'/ping', BasicHander),
-                (r'/echo/?([\w?&=]*)', EchoHander))
+                (r'/echo/?([\w?&=]*)', EchoHander),
+                (r'/session', AuthHander),
+                )
     application = tornado.web.Application(handlers=handlers, debug=__debug__)
     # make_apispec(handlers)
     host = 'localhost'

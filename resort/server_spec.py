@@ -1,5 +1,6 @@
 import json
 import pathlib
+import errors
 
 
 class ServerSpecReader(object):
@@ -8,10 +9,11 @@ class ServerSpecReader(object):
     Args:
         spec_file (pathlib.Path): a full path to a spec file
     """
+    __supported_auth_methods = ('post-request')
 
     def __init__(self):
         self._file = None
-        self._paths = None
+        self.requests = None
         self.version = None
         self.vprefix = None
 
@@ -27,35 +29,51 @@ class ServerSpecReader(object):
         reader._file = spec_file
 
         with reader._file.open() as fp:
-            body = json.load(fp)
-            reader._paths = reader.ensure_payload(body['paths'])
-            reader.url = body['server']['url']
-            info_title = body["info"].get("title", None)
-            reader.test_name = info_title or reader._file.stem 
-            reader.version = body['info']['version']
-            reader.vprefix = pathlib.Path('v' + reader.version)
+            try:
+                body = json.load(fp)
+                reader.requests = ServerSpecReader.ensure_params(body['requests'])
+                reader.host = body['server']['host']
+                reader.session = ServerSpecReader.parse_session(body)
+                info_title = body["info"].get("title", None)
+                reader.test_name = info_title or reader._file.stem
+                reader.version = body['info']['version']
+                reader.vprefix = pathlib.Path('v' + reader.version)
+            except KeyError as err:
+                raise errors.SpecFormatError(fname=reader._file,
+                                             err=err,
+                                             reason='section is required')
         return reader
 
-    def ensure_payload(self, paths: list):
-        """Converts
-        [["/index.html", "get"], ["/api/user", "post", {...}]]
-        to
-        [["/index.html", "get", None], ["/api/user", "post", {...}]]
-        So it's easier to unpack them.
-
-        Args:
-            paths (list): [list of test entries]
-        """
-        return list(entry if len(entry) == 3 else entry + [None] for entry in paths)
-
-    def paths(self):
+    def fetch_signatures(self):
         """Yields method, path, payload for each entry in the spec.
 
         Returns:
           a generator of method, path: tuple
         """
-        for entryid, (entry, method, payload) in enumerate(self._paths):
-            yield entryid, method, entry, payload
 
-    def make_name(self, entryid):
-        return "{0}_{1}".format(self.test_name, entryid)
+        for entry_id, (uri, params) in enumerate(self.requests):
+            yield entry_id, uri, params
+
+    def make_name(self, entry_id):
+        return "{0}_{1}".format(self.test_name, entry_id)
+
+    @property
+    def has_session(self):
+        return self.session is not None
+
+    @property
+    def session_type(self):
+        return self.session['type'] if self.has_session else None
+
+    @classmethod
+    def parse_session(cls, body: dict):
+        try:
+            session_desc = body['server']['session']
+        except KeyError:
+            return None
+
+        return session_desc
+
+    @classmethod
+    def ensure_params(cls, request_signatures):
+        return [(x[0], x[1]) if len(x) > 1 else (x[0], dict()) for x in request_signatures]

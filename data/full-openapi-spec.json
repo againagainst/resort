@@ -6,7 +6,7 @@
         "version": "1.5.6"
     },
     "parameters": {},
-    "paths": {
+    "requests": {
         "/ping": {
             "get": {
                 "description": "Get a response for ping (pong)",

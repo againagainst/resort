@@ -1,5 +1,4 @@
 import re
-import pathlib
 
 
 class BaseEtalon(object):
@@ -10,7 +9,7 @@ class BaseEtalon(object):
         entry in the spec and it's path in the snapshots directory
 
         Args:
-            entry (str): Entry path
+            entry (str): Entry path (actually an URI)
             name [str, 'etalon']: File Name
             ext [str, 'txt']: File extension
         """
@@ -20,51 +19,23 @@ class BaseEtalon(object):
 
     @property
     def entry(self):
+        """unified name of a resource (uri) which the snapshot represents"""
         return self._entry
 
     @property
     def name(self):
+        """name of the snapshot, like test_name_N_etalontype"""
         return self._name
 
     @property
     def ext(self):
-        """File extension, defaults to .txt"""
+        """extension of the snapshot, defaults to .txt"""
         return self._ext
 
     @property
     def file_name(self):
-        """
-        [up to eio/client][up to self.dir][to be returned]:
-        /path/project_dir/ etalons/        test_name_etalon.fmt
-
-        Returns:
-            [str]: name of the etalon file: test_title+.extension
-        """
-        return "{0}.et.{1}".format(self._name, self._ext)
-
-    @property
-    def dir(self):
-        """
-        [up to eio/client][to be returned][up to self.file_name]:
-        /path/project_dir/ etalons/        test_name_etalon.fmt
-
-        Returns:
-            [pathlib.Path]: directory for etalons, relative to the project_dir
-        """
-        # flatten etalon files
-        # .joinpath(pathlib.Path(self._entry))
-        return pathlib.Path('etalons')
-
-    @property
-    def path(self):
-        """
-        [up to eio/client][dir+file_name, to be returned]:
-        /path/project_dir/ etalons/test_name_etalon.fmt
-
-        Returns:
-            [pathlib.Path]: path to the etalon, relative to the project_dir
-        """
-        return self.dir.joinpath(self.file_name)
+        """actual name of the snapshot file"""
+        return "{0}.et.{1}".format(self.name, self.ext)
 
     @staticmethod
     def encode_filepath(url: str):

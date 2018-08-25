@@ -1,11 +1,12 @@
 import urllib.parse
+import contextlib
 from typing import Type
 
 import requests
 
+import errors
 from .etalons import BaseEtalon, BasicHTTPResponseEtalon
 from .server_spec import ServerSpecReader
-from .errors import ConnectionError
 
 
 class BasicClient(object):
@@ -15,6 +16,7 @@ class BasicClient(object):
     Args:
         server_spec (ServerSpecReader)
     """
+    Etalon = BasicHTTPResponseEtalon
 
     def __init__(self, server_spec: ServerSpecReader):
         self.server_spec = server_spec
@@ -30,29 +32,55 @@ class BasicClient(object):
         Returns: A generator of etalons
 
         """
-        for entryid, method, each_entry, payload in self.server_spec.paths():
-            yield self.snapshot(entry=each_entry,
-                                method=method,
-                                name=self.server_spec.make_name(entryid),
-                                requests_kw=dict(json=payload))
+        for entry_id, uri, params in self.server_spec.fetch_signatures():
+            yield self.snapshot(uri=uri,
+                                params=params,
+                                name=self.server_spec.make_name(entry_id)
+                                )
 
-    def snapshot(self, entry: str, method: str, name: str,
-                 requests_kw=None,
-                 Etalon: Type[BaseEtalon]=BasicHTTPResponseEtalon):
+    def snapshot(self, uri: str, params: dict, name: str):
         """Makes etalon, a "snapshot" of response from the server
         to request on the :entry: with the HTTP :method:
 
         Args:
-          entry: str: part of the url that describes an API entry
-          method: str: HTTP method: GET, POST, PUT...
-          Etalon: Constructor (Default is BasicHTTPResponseEtalon)
+          uri: str: part of the url that describes an resource
+          params: HTTP parametres method (GET, POST, PUT), body, headers
+          name: str - name of the snapshot
 
-        Returns:
+        Returns: BasicHTTPResponseEtalon
 
         """
-        url = urllib.parse.urljoin(self.server_spec.url, entry)
+        url = urllib.parse.urljoin(self.server_spec.host, uri)
+        method = self.pop_method(params)
         try:
-            response = requests.request(method=method, url=url, **requests_kw)
+            with self.make_session() as session:
+                response = session.request(method=method, url=url, **params)
         except requests.exceptions.ConnectionError:
-            raise ConnectionError(url)
-        return Etalon(entry=entry, name=name, response=response)
+            raise errors.ConnectionError(url)
+        except TypeError as err:
+            raise errors.SpecFormatError(fname=name, err=err)
+        return self.Etalon(entry=uri, name=name, response=response)
+
+    @contextlib.contextmanager
+    def make_session(self):
+        if self.server_spec.session_type == 'post-request':
+            session = requests.Session()
+            uri, params = self.server_spec.session['create']
+            url = urllib.parse.urljoin(self.server_spec.host, uri)
+            method = self.pop_method(params)
+            session.request(method=method, url=url, **params)
+        else:
+            session = requests
+
+        yield session
+
+        if self.server_spec.session_type == 'post-request':
+            uri, params = self.server_spec.session['delete']
+            url = urllib.parse.urljoin(self.server_spec.host, uri)
+            method = self.pop_method(params)
+            session.request(method=method, url=url, **params)
+            session.close()
+
+    @classmethod
+    def pop_method(cls, params: dict):
+        return params.pop('method', 'GET')
