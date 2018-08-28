@@ -1,9 +1,13 @@
 import logging
+import pathlib
+import functools
 
+import click
 import daiquiri
 
-from resort import constants, options
+from resort import constants
 from resort.project import ResortProject
+from resort.engine import ResortEngine
 from resort.errors import ResortBaseException
 
 # setup logging
@@ -12,35 +16,38 @@ daiquiri.setup(program_name=constants.APP_NAME,
 LOG = daiquiri.getLogger(constants.APP_NAME)
 
 
-class ResortApp:
-
-    @staticmethod
-    def launch():
-        """Main function of the application.
-        Reads cli argumnets, calls engine's command, loggs errors.
-        """
+def log_exceptions(command):
+    @functools.wraps
+    def wrapper(*args, **kwargs):
         try:
-            args = options.read_args()
-            if args.mode.lower() == constants.ResortMode.CREATE:
-                ResortProject.create(args.project, make_config=True)
-            else:
-                project = ResortProject.read(args.project)
-                ResortApp.invoke_engine(args, project)
+            return command(*args, **kwargs)
         except ResortBaseException as exc:
             LOG.warning(exc)
-
-    @staticmethod
-    def invoke_engine(args, project: ResortProject):
-        """See options.read_args.
-        `store` -> ResortEngine.store
-        `check` -> ResortEngine.check
-
-        Args:
-            args ([argparse.Namespace]): args is a result of parse_args
-            project (ResortProject): read or created project structure
-        """
-        args.command(project)
+    return wrapper
 
 
-if __name__ == '__main__':
-    ResortApp.launch()
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+def create(project_dir: str):
+    project_path = pathlib.Path(project_dir)
+    ResortProject.create(project_path, make_config=True)
+
+
+@cli.command()
+def store(project_dir: str=None):
+    launch(ResortEngine.store, project_dir)
+
+
+@cli.command()
+def check(project_dir: str=None):
+    launch(ResortEngine.check, project_dir, cli=True)
+
+
+def launch(command, project_dir: str, *args, **kwargs):
+    project_path = pathlib.Path(project_dir)
+    project = ResortProject.read(project_path)
+    command(project, *args, **kwargs)

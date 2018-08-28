@@ -98,7 +98,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=find_packages(exclude=('tests',)),
+    packages=find_packages(exclude=('test',)),
     entry_points={
         'console_scripts': ['resort=resort.app:cli'],
     },
