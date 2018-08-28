@@ -3,7 +3,6 @@ import logging
 import daiquiri
 
 from resort import constants, options
-from resort.engine import ResortEngine
 from resort.project import ResortProject
 from resort.errors import ResortBaseException
 
@@ -26,9 +25,21 @@ class ResortApp:
                 ResortProject.create(args.project, make_config=True)
             else:
                 project = ResortProject.read(args.project)
-                ResortEngine.command(args, project)
+                ResortApp.invoke_engine(args, project)
         except ResortBaseException as exc:
             LOG.warning(exc)
+
+    @staticmethod
+    def invoke_engine(args, project: ResortProject):
+        """See options.read_args.
+        `store` -> ResortEngine.store
+        `check` -> ResortEngine.check
+
+        Args:
+            args ([argparse.Namespace]): args is a result of parse_args
+            project (ResortProject): read or created project structure
+        """
+        args.command(project)
 
 
 if __name__ == '__main__':

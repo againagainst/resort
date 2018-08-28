@@ -41,15 +41,3 @@ class ResortEngine:
                     print('{0} | {1}:'.format(etalon.file_name, etalon.entry))
                     print(result['difftext'])
         return check_hash
-
-    @staticmethod
-    def command(args, project: ResortProject):
-        """See options.read_args.
-        --store -> ResortEngine.store
-        --check -> ResortEngine.check
-
-        Args:
-            args ([argparse.Namespace]): args is a result of parse_args
-            project (ResortProject): read or created project structure
-        """
-        args.command(project)

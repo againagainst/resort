@@ -1,6 +1,3 @@
-'''
-python resort/app.py -h
-'''
 import argparse
 import os
 import pathlib
