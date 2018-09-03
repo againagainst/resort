@@ -1,3 +1,4 @@
+import os
 import logging
 import pathlib
 import functools
@@ -17,7 +18,7 @@ LOG = daiquiri.getLogger(constants.APP_NAME)
 
 
 def log_exceptions(command):
-    @functools.wraps
+    @functools.wraps(command)
     def wrapper(*args, **kwargs):
         try:
             return command(*args, **kwargs)
@@ -32,22 +33,31 @@ def cli():
 
 
 @cli.command()
+@click.argument('project_dir', type=click.Path(exists=False))
+@log_exceptions
 def create(project_dir: str):
     project_path = pathlib.Path(project_dir)
     ResortProject.create(project_path, make_config=True)
 
 
 @cli.command()
-def store(project_dir: str=None):
-    launch(ResortEngine.store, project_dir)
+@click.option('--project',
+              type=click.Path(exists=True, file_okay=False, writable=True),
+              default=None)
+def store(project: str=None):
+    launch(ResortEngine.store, project)
 
 
 @cli.command()
-def check(project_dir: str=None):
-    launch(ResortEngine.check, project_dir, cli=True)
+@click.option('--project',
+              type=click.Path(exists=True, file_okay=False, writable=True),
+              default=None)
+def check(project: str=None):
+    launch(ResortEngine.check, project, cli=True)
 
 
-def launch(command, project_dir: str, *args, **kwargs):
-    project_path = pathlib.Path(project_dir)
+@log_exceptions
+def launch(command, project_dir: str=None, *args, **kwargs):
+    project_path = pathlib.Path(project_dir or os.getcwd())
     project = ResortProject.read(project_path)
     command(project, *args, **kwargs)

@@ -1,6 +1,7 @@
 import json
 import pathlib
-import errors
+
+from . import errors
 
 
 class ServerSpecReader(object):

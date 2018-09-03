@@ -4,7 +4,7 @@ from typing import Type
 
 import requests
 
-import errors
+from . import errors
 from .etalons import BaseEtalon, BasicHTTPResponseEtalon
 from .server_spec import ServerSpecReader
 
