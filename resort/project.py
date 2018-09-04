@@ -151,14 +151,14 @@ class ResortProject(object):
     __default_testfile_name = 'test_unknown.json'
 
     __default_testfile = {
+        "requests": [
+            ["/index.html", {"method": "GET"}]
+        ],
+        "server": {
+            "host": "http://127.0.0.1:8888"
+        },
         "info": {
             "description": "generated test stub",
             "version": "1.0.0"
-        },
-        "server": {
-            "url": "http://127.0.0.1:8888"
-        },
-        "requests": [
-            ["/index.html", "get"]
-        ]
+        }
     }
