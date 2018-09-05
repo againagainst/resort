@@ -18,6 +18,7 @@
             "program": "${workspaceFolder}/.venv/bin/resort",
             "args": [
                 "store",
+                "-f",
                 "projects/basic-rest-test",
             ]
         },

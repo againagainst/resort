@@ -57,7 +57,7 @@ class BasicClient(object):
                 response = session.request(method=method, url=url, **params)
         except requests.exceptions.ConnectionError:
             raise errors.ConnectionError(url)
-        except TypeError as err:
+        except (TypeError, ValueError) as err:
             raise errors.SpecFormatError(fname=name, err=err)
         return self.Etalon(entry=uri, name=name, response=response)
 

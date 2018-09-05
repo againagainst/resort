@@ -70,6 +70,10 @@ class ServerSpecReader(object):
     def parse_session(cls, body: dict):
         try:
             session_desc = body['server']['session']
+            if 'create' in session_desc and len(session_desc['create']) == 1:
+                session_desc['create'].append(dict())
+            if 'delete' in session_desc and len(session_desc['delete']) == 1:
+                session_desc['delete'].append(dict())
         except KeyError:
             return None
 
