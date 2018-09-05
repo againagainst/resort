@@ -13,6 +13,12 @@
             "problemMatcher": []
         },
         {
+            "label": "Install resort (editable)",
+            "type": "shell",
+            "command": "${workspaceFolder}/.venv/bin/pip install --editable .",
+            "problemMatcher": []
+        },
+        {
             "label": "Console",
             "type": "shell",
             "command": "${workspaceFolder}/.venv/bin/python3",

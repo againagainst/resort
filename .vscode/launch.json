@@ -15,36 +15,30 @@
             "name": "resort store",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/resort/app.py",
+            "program": "${workspaceFolder}/.venv/bin/resort",
             "args": [
-                "--project=${workspaceFolder}/projects/basic-rest-test",
-                "store"
-            ],
-            "env": {
-                "PYTHONPATH":"${workspaceFolder}"
-            }
+                "store",
+                "projects/basic-rest-test",
+            ]
         },
         {
             "name": "resort check",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/resort/app.py",
+            "program": "${workspaceFolder}/.venv/bin/resort",
             "args": [
-                "--project=${workspaceFolder}/projects/basic-rest-test",
-                "check"
-            ],
-            "env": {
-                "PYTHONPATH":"${workspaceFolder}"
-            }
+                "check",
+                "projects/basic-rest-test"
+            ]
         },
         {
             "name": "resort create",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/resort/app.py",
+            "program": "${workspaceFolder}/.venv/bin/resort",
             "args": [
-                "--project=${workspaceFolder}/projects/basic-rest-test",
-                "create"
+                "create",
+                "projects/basic-rest-test"
             ],
             "env": {
                 "PYTHONPATH":"${workspaceFolder}"
