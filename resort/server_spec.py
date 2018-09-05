@@ -14,7 +14,7 @@ class ServerSpecReader(object):
 
     def __init__(self):
         self._file = None
-        self.requests = None
+        self.paths = None
         self.version = None
         self.vprefix = None
 
@@ -32,7 +32,7 @@ class ServerSpecReader(object):
         with reader._file.open() as fp:
             try:
                 body = json.load(fp)
-                reader.requests = ServerSpecReader.ensure_params(body['requests'])
+                reader.paths = ServerSpecReader.ensure_params(body['paths'])
                 reader.url = body['server']['url']
                 reader.session = ServerSpecReader.parse_session(body)
                 info_title = body["info"].get("title", None)
@@ -52,7 +52,7 @@ class ServerSpecReader(object):
           a generator of method, path: tuple
         """
 
-        for entry_id, (uri, params) in enumerate(self.requests):
+        for entry_id, (uri, params) in enumerate(self.paths):
             yield entry_id, uri, params
 
     def make_name(self, entry_id):

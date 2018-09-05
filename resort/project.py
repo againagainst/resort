@@ -151,7 +151,7 @@ class ResortProject(object):
     __default_testfile_name = 'test_unknown.json'
 
     __default_testfile = {
-        "requests": [
+        "paths": [
             ["/index.html", {"method": "GET"}]
         ],
         "server": {

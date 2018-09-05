@@ -1,5 +1,5 @@
 {
-  "requests": [
+  "paths": [
     [
       "/echo", {"method": "POST", "body":"json"}
     ],
