@@ -33,7 +33,7 @@ class ServerSpecReader(object):
             try:
                 body = json.load(fp)
                 reader.requests = ServerSpecReader.ensure_params(body['requests'])
-                reader.host = body['server']['host']
+                reader.url = body['server']['url']
                 reader.session = ServerSpecReader.parse_session(body)
                 info_title = body["info"].get("title", None)
                 reader.test_name = info_title or reader._file.stem

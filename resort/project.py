@@ -155,7 +155,7 @@ class ResortProject(object):
             ["/index.html", {"method": "GET"}]
         ],
         "server": {
-            "host": "http://127.0.0.1:8888"
+            "url": "http://127.0.0.1:8888"
         },
         "info": {
             "description": "generated test stub",
