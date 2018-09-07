@@ -20,16 +20,12 @@ Configure the resort and provide one or more test specifications. They must be i
 $ vim test_first.json
 $ cat test_first.json
 {
-    "info": {
-        "description": "generated test stub",
-        "version": "1.0.0"
-    },
-    "server": {
-        "url": "http://127.0.0.1:8888"
-    },
     "paths": [
         ["/index.html"]
-    ]
+    ],
+    "server": {
+        "url": "http://127.0.0.1:8888"
+    }
 }
 ```
 The folowing configuration is optional, you may use it to exclude some test files. By default it does nothing. It's safe to delete this file.
