@@ -32,12 +32,15 @@
 <section>
 	<h3>a server</h3>
 		<pre>
-<code class="hljs js">
-class BasicHander(your.framework.RequestHandler):
-	def get(self):
-		'''a REST endpoint.'''
-		self.set_status(HTTPStatus.OK)
-		self.write("pong")
+<code class="hljs js">class BasicHander(your.framework.RequestHandler):
+    def get(self):
+        '''a REST endpoint.'''
+        self.set_status(HTTPStatus.OK)
+        self.write("pong")
+	
+    
+handlers = ((r'/ping', BasicHander),)
+your.framework..Application(handlers=handlers).serve()
 </code>
 		</pre>
 </section>	
