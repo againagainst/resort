@@ -1,6 +1,7 @@
 import json
 import pathlib
-import errors
+
+from . import errors
 
 
 class ServerSpecReader(object):
@@ -13,7 +14,7 @@ class ServerSpecReader(object):
 
     def __init__(self):
         self._file = None
-        self.requests = None
+        self.paths = None
         self.version = None
         self.vprefix = None
 
@@ -31,8 +32,8 @@ class ServerSpecReader(object):
         with reader._file.open() as fp:
             try:
                 body = json.load(fp)
-                reader.requests = ServerSpecReader.ensure_params(body['requests'])
-                reader.host = body['server']['host']
+                reader.paths = ServerSpecReader.ensure_params(body['paths'])
+                reader.url = body['server']['url']
                 reader.session = ServerSpecReader.parse_session(body)
                 info_title = body["info"].get("title", None)
                 reader.test_name = info_title or reader._file.stem
@@ -51,7 +52,7 @@ class ServerSpecReader(object):
           a generator of method, path: tuple
         """
 
-        for entry_id, (uri, params) in enumerate(self.requests):
+        for entry_id, (uri, params) in enumerate(self.paths):
             yield entry_id, uri, params
 
     def make_name(self, entry_id):
@@ -69,6 +70,10 @@ class ServerSpecReader(object):
     def parse_session(cls, body: dict):
         try:
             session_desc = body['server']['session']
+            if 'create' in session_desc and len(session_desc['create']) == 1:
+                session_desc['create'].append(dict())
+            if 'delete' in session_desc and len(session_desc['delete']) == 1:
+                session_desc['delete'].append(dict())
         except KeyError:
             return None
 

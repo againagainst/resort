@@ -8,8 +8,8 @@
 - [x] Create an etalon-reader (`--check` mode)
 
 ### Basic test generator
-- [ ] Support --verbose mode, and run application quietly by default
-- [ ] Require -f with the `store` if etalons directory is not empty
+- [x] Support --verbose mode, and run application quietly by default
+- [x] Require -f with the `store` if etalons directory is not empty
 - [ ] Module and application modes `$ python3 -m resort --help` and `$ resort --help`
 - [ ] Test generation (`$ resort generate [--unittest]`)
 - [x] CLI storing (`$ resort --store`)
@@ -27,11 +27,13 @@
 - [ ] Support situation when test files were changed after the `store` action. (warning on check)
 - [ ] MIME Type based etalon
 - [ ] Implement test system based on `tavern` format
+- [ ] Implement test system based on `OpenAPI (swagger)` format
 - [ ] Make `etalon-id` structure that combines `entry: str` and `name: str`
 - [ ] Control exports with `__all__` field in every module/package
 - [x] A tool for comparing etalon and snapshot
 - [x] Test scenario feature: call checks in specified order
 - [x] Support names for tests' etalons (test_*.json['info']['title'])
+- [ ] Make `create` command more verbose [CLI]
 
 ### Project organization tasks
 - [ ] Add tests and use TDD

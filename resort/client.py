@@ -4,7 +4,7 @@ from typing import Type
 
 import requests
 
-import errors
+from . import errors
 from .etalons import BaseEtalon, BasicHTTPResponseEtalon
 from .server_spec import ServerSpecReader
 
@@ -50,14 +50,14 @@ class BasicClient(object):
         Returns: BasicHTTPResponseEtalon
 
         """
-        url = urllib.parse.urljoin(self.server_spec.host, uri)
+        url = urllib.parse.urljoin(self.server_spec.url, uri)
         method = self.pop_method(params)
         try:
             with self.make_session() as session:
                 response = session.request(method=method, url=url, **params)
         except requests.exceptions.ConnectionError:
             raise errors.ConnectionError(url)
-        except TypeError as err:
+        except (TypeError, ValueError) as err:
             raise errors.SpecFormatError(fname=name, err=err)
         return self.Etalon(entry=uri, name=name, response=response)
 
@@ -66,7 +66,7 @@ class BasicClient(object):
         if self.server_spec.session_type == 'post-request':
             session = requests.Session()
             uri, params = self.server_spec.session['create']
-            url = urllib.parse.urljoin(self.server_spec.host, uri)
+            url = urllib.parse.urljoin(self.server_spec.url, uri)
             method = self.pop_method(params)
             session.request(method=method, url=url, **params)
         else:
@@ -76,7 +76,7 @@ class BasicClient(object):
 
         if self.server_spec.session_type == 'post-request':
             uri, params = self.server_spec.session['delete']
-            url = urllib.parse.urljoin(self.server_spec.host, uri)
+            url = urllib.parse.urljoin(self.server_spec.url, uri)
             method = self.pop_method(params)
             session.request(method=method, url=url, **params)
             session.close()

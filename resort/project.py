@@ -4,8 +4,8 @@ import pathlib
 
 import daiquiri
 
-from . import constants, options
-from .errors import BadProjectPath, BadArgument
+from . import constants
+from .errors import BadArgument, BadConfiguration, BadProjectPath
 
 LOG = daiquiri.getLogger(__name__)
 
@@ -81,10 +81,27 @@ class ResortProject(object):
         Returns:
             ResortProject: instance of the class
         """
-        default_config = project_dir.joinpath(options.CONFIG_FILE_NAME)
+        default_config = project_dir.joinpath(constants.CONFIG_FILE_NAME)
         return cls(project_dir,
-                   test_specs=options.resolve_test_files(project_dir=project_dir),
-                   config=options.read_config(default_config))
+                   test_specs=cls.resolve_test_files(project_dir=project_dir),
+                   config=cls.read_config(default_config))
+
+    @classmethod
+    def read_config(cls, cfg_file: pathlib.Path):
+        """Reads the given config file
+
+        Args:
+        cfg_file: pathlib.Path:
+        full path to the configuration file
+
+        Returns:
+        dict: config.json loaded
+        """
+        try:
+            with cfg_file.open(mode='r') as cfgf:
+                return json.load(cfgf)
+        except FileNotFoundError:
+            raise BadConfiguration('No such file: "%s"' % cfg_file)
 
     def resolve_project_dir(self, make_dir=False):
         """Checks if project dir can be created:
@@ -105,6 +122,17 @@ class ResortProject(object):
             self.project_dir.mkdir(parents=True, exist_ok=True)
         return self.project_dir
 
+    @classmethod
+    def resolve_test_files(cls, project_dir: pathlib.Path, filetype='json'):
+        """Finds all test_* files in the project directory.
+
+        Args:
+            project_dir: pathlib.Path:  full path to the project
+        Returns:
+            list: of pathlib.Paths to each test_* files
+        """
+        return list(project_dir.glob('test_*.{filetype}'.format(filetype=filetype)))
+
     def has_etalons(self):
         return self.etalons_dir.exists() and len(os.listdir(str(self.etalons_dir))) > 0
 
@@ -123,14 +151,14 @@ class ResortProject(object):
     __default_testfile_name = 'test_unknown.json'
 
     __default_testfile = {
-        "info": {
-            "description": "generated test stub",
-            "version": "1.0.0"
-        },
+        "paths": [
+            ["/index.html", {"method": "GET"}]
+        ],
         "server": {
             "url": "http://127.0.0.1:8888"
         },
-        "requests": [
-            ["/index.html", "get"]
-        ]
+        "info": {
+            "description": "generated test stub",
+            "version": "1.0.0"
+        }
     }

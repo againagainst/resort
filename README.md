@@ -12,7 +12,7 @@ Let's suppose you have a server with the RESTful API (`test-server`). You want t
 
 Run resort to generate all boilerplate for the project
 ```
-$ python resort/app.py create --project=basic-rest-test
+$ resort --project=basic-rest-test
 $ cd basic-rest-test
 ```
 Configure the resort and provide one or more test specifications. They must be in the project directory and have `test_*` prefix in the file name:
@@ -20,16 +20,12 @@ Configure the resort and provide one or more test specifications. They must be i
 $ vim test_first.json
 $ cat test_first.json
 {
-    "info": {
-        "description": "generated test stub",
-        "version": "1.0.0"
-    },
+    "paths": [
+        ["/index.html"]
+    ],
     "server": {
         "url": "http://127.0.0.1:8888"
-    },
-    "requests": [
-        ["/index.html"]
-    ]
+    }
 }
 ```
 The folowing configuration is optional, you may use it to exclude some test files. By default it does nothing. It's safe to delete this file.
@@ -43,13 +39,15 @@ $ cat config.json
 
 Now let's memorize the way the test server responds.
 ```
-$ python resort/app.py store
+$ resort store
 ```
 The application will store some files that represent responses from the test-server, they called `etalons`.
 Now you can edit the source code of your test-server, restart it, and test that everything works as expected:
 ```
-$ python resort/app.py check
+$ resort check -v
+Nothing changed.
 ```
+
 
 ### How to prepare the dev environment:
 ```
