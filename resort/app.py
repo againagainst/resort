@@ -9,6 +9,7 @@ from .project import ResortProject
 from .engine import ResortEngine
 from .cli import ResortOptions, log_exceptions
 
+
 @click.group()
 @click.option('-v', '--verbose', count=True,
               help='Give more output. Option is additive (up to 2 times).')
@@ -41,27 +42,36 @@ def create(project_dir: str):
 @click.argument('project_dir',
                 type=click.Path(exists=True, file_okay=False, writable=True),
                 required=False)
+@log_exceptions
 def store(project_dir, force):
     """Fetch and store responses as etalons.
     """
-    launch(ResortEngine.store, project_dir, update_existing=force)
+    project = _read_project(project_dir)
+    ResortEngine.store(project, update_existing=force)
 
 
 @cli.command()
 @click.argument('project_dir',
                 type=click.Path(exists=True, file_okay=False),
                 required=False)
+@log_exceptions
 def check(project_dir):
     """Compare actual responses to the etalons.
     """
-    launch(ResortEngine.check, project_dir, cli=True)
+    project = _read_project(project_dir)
+    ResortEngine.check(project, cli=True)
 
 
-@log_exceptions
-def launch(resort_command, project_dir: str=None, *args, **kwargs):
+def _read_project(project_dir: str=None):
+    """Reads project from project_dir of from cwd
+        project_dir (str, optional): Defaults to None (cwd)
+
+    Returns:
+        ResortProject: [description]
+    """
+
     project_path = pathlib.Path(project_dir or os.getcwd())
-    project = ResortProject.read(project_path)
-    resort_command(project, *args, **kwargs)
+    return ResortProject.read(project_path)
 
 
 if __name__ == '__main__':
